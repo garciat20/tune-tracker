@@ -12,32 +12,23 @@ import java.sql.Statement;
  * */
 public class Main {
 
-    public static void main(String[] args) {
-        DbConnection connection = new DbConnection();
-
-        connection.connect();
+    public static DbConnection sql;
+    public static void main(String[] args) throws SQLException {
+        sql = new DbConnection();
 
         Commands commands = new Commands();
 
         Scanner scanner = new Scanner(System.in);
+        String input;
 
-        while (connection.getCon() != null){
+        while (true){
             System.out.println("Enter a command - if stuck enter 'help' for list of commands");
-
-
-            // get user input, based on that execute appropriate commands
-            if (scanner.next() == "q"){
-                break;
-            }
-            if (scanner.next() == "disconnect"){
-                try {
-                    connection.disconnect();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
+            input = scanner.next().toLowerCase().trim();
+            if (input.equals("q")) break;
+            commands.parseInput(input);
         }
+
+        sql.disconnect();
 
     }
 }
