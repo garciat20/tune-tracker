@@ -12,6 +12,7 @@ An in-depth paragraph about your project and overview of use. (placeholder for n
 
 * Describe any prerequisites, libraries, OS version, etc., needed before installing program.
 * ex. Windows 10
+* Download MySQL Java Connector and add to classpath: https://dev.mysql.com/downloads/connector/j/5.1.html
 
 ### Installing
 
