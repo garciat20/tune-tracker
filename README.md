@@ -10,7 +10,6 @@ Tunetracker allows users to sign up/ login to access core features of the applic
 
 ### Dependencies
 
-* Describe any prerequisites, libraries, OS version, etc., needed before installing program.
 * Download MySQL Server: https://dev.mysql.com/downloads/mysql/
 * Download MySQL Java Connector and add to classpath: https://dev.mysql.com/downloads/connector/j/5.1.html
 * Download either MySQL workbench or DataGrip to see tables in database update: https://dev.mysql.com/downloads/workbench/ | https://www.jetbrains.com/datagrip/download/#section=mac
@@ -44,4 +43,4 @@ Thomas Garcia thomasakulla@gmail.com
 ## Version History
 
 * 0.1
-    * Able to connect to database, no functionality yet besides connecting to database.
+    * Able to connect to database, no functionality yet besides connecting to database. No JUnit testing yet.
