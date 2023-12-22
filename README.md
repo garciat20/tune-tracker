@@ -1,30 +1,33 @@
 # TuneTracker
 
-A mock database with songs and fake users. 
+A prefilled database with songs and fake users. Interacting with CLI can allow users to sign up/ login and perform core functions
 
 ## Description
 
-An in-depth paragraph about your project and overview of use. (placeholder for now)
+Tunetracker allows users to sign up/ login to access core features of the application such as following/ unfollowing other users, create a playlist, add songs to it, view profile statistics, and recommend songs based on listening history.
 
 ## Getting Started
 
 ### Dependencies
 
 * Describe any prerequisites, libraries, OS version, etc., needed before installing program.
-* ex. Windows 10
+* Download MySQL Server: https://dev.mysql.com/downloads/mysql/
 * Download MySQL Java Connector and add to classpath: https://dev.mysql.com/downloads/connector/j/5.1.html
+* Download either MySQL workbench or DataGrip to see tables in database update: https://dev.mysql.com/downloads/workbench/ | https://www.jetbrains.com/datagrip/download/#section=mac
 
 ### Installing
 
-* How/where to download your program
-* Any modifications needed to be made to files/folders
+* Git clone this repository in your local machine anywhere you like
+* DbConnection.java file may need to be modified (field names such as: url, username, password) based on port number hosting MySQL server, what name you decide to name the database, and what username, password you make for your database.
+* MySQL Workbench: To keep consistency you may make a New Connection using MySQL workbench using the port number: **3306**, using **root** as the username/ password, and then creating a creating a schema called tunetracker.
+* DataGrip: I believe in DataGrip you may click on the DataSources category, then enter all the necessary information such as port number (**3306**), **root** as the username/ password, and creating a database called tunetracker
 
 ### Executing program
 
 * How to run the program
 * Step-by-step bullets
 ```
-code blocks for commands
+Run Main.Java File and follow instructions in terminal 
 ```
 
 ## Help
@@ -36,28 +39,9 @@ command to run if program contains helper info
 
 ## Authors
 
-Contributors names and contact info
-
-ex. Dominique Pizzie  
-ex. [@DomPizzie](https://twitter.com/dompizzie)
+Thomas Garcia thomasakulla@gmail.com
 
 ## Version History
 
-* 0.2
-    * Various bug fixes and optimizations
-    * See [commit change]() or See [release history]()
 * 0.1
-    * Initial Release
-
-## License
-
-This project is licensed under the [NAME HERE] License - see the LICENSE.md file for details
-
-## Acknowledgments
-
-Inspiration, code snippets, etc.
-* [awesome-readme](https://github.com/matiassingers/awesome-readme)
-* [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
-* [dbader](https://github.com/dbader/readme-template)
-* [zenorocha](https://gist.github.com/zenorocha/4526327)
-* [fvcproductions](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46)
+    * Able to connect to database, no functionality yet besides connecting to database.
