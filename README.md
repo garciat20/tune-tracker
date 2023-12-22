@@ -23,17 +23,14 @@ Tunetracker allows users to sign up/ login to access core features of the applic
 
 ### Executing program
 
-* How to run the program
-* Step-by-step bullets
-```
-Run Main.Java File and follow instructions in terminal 
-```
+Run Main.java File and follow instructions in terminal 
 
 ## Help
 
-Any advise for common problems or issues.
+For help as to what commands are available simply enter 'help' in the terminal
+
 ```
-command to run if program contains helper info
+help
 ```
 
 ## Authors
