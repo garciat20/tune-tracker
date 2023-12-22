@@ -41,3 +41,9 @@ Thomas Garcia thomasakulla@gmail.com
 
 * 0.1
     * Able to connect to database, no functionality yet besides connecting to database. No JUnit testing yet.
+ 
+## Future/ Goals
+
+* Fully test out application to make sure edge cases are covered and no major bugs using JUnit
+* Use Spring Boot to retrieve songs from a database of songs and enter retrieved songs into database.
+* Store passwords securely using SHA-3
