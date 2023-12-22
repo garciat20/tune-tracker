@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * figure out of i connected properly and take a datapiece out from a simple table called test!
+ *
  * */
 public class Main {
 
