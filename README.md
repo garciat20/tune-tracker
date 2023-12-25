@@ -46,5 +46,4 @@ Thomas Garcia thomasakulla@gmail.com
 
 * Fully test out application to make sure edge cases are covered and no major bugs using JUnit
 * Use Spring Boot to retrieve songs from a database of songs and enter retrieved songs into database.
-* Store passwords securely using SHA-3
 * Creating a frontend to connect to the backend using Javascript, and Javascript frameworks such as React or Vue and Bootstrap.
