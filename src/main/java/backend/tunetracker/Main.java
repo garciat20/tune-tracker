@@ -1,14 +1,12 @@
 package backend.tunetracker;
 
-import backend.tunetracker.cli.Commands;
+import backend.tunetracker.controller.Commands;
 import backend.tunetracker.config.DbConnection;
 import java.util.Scanner;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 /**
- *
+ * Main class to run program
  * */
 public class Main {
 
@@ -23,7 +21,7 @@ public class Main {
 
         while (true){
             System.out.println("Enter a command - if stuck enter 'help' for list of commands");
-            input = scanner.next().toLowerCase().trim();
+            input = scanner.nextLine().toLowerCase().trim();
             if (input.equals("q")) break;
             commands.parseInput(input);
         }
