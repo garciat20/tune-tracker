@@ -15,12 +15,13 @@ public class DbConnection {
      * */
     public DbConnection() {
         try {
-            Class.forName(className);
+            Class.forName(this.className);
             this.con = DriverManager.getConnection(
-                    url, username, password
+                    this.url, this.username, this.password
             );
         } catch (Exception e) {
             System.out.println("Unable to connect to database :(");
+            e.printStackTrace();
             return;
         }
         System.out.println("Connected to tunetracker database!");
