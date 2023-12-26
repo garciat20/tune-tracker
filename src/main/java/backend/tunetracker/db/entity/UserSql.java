@@ -54,25 +54,28 @@ public class UserSql {
 
     }
 
-    public static User selectByEmailPassword(String email, String password)throws SQLException{
-        PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT * FROM " +
-                USER_TABLE
-                + " WHERE " + EMAIL + "=?" + " AND " + PASSWORD + " =?");
-
-        ps.setString(1, email);
-        ps.setString(2, password);
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()){
+    public static User selectByEmailPassword(String email, String password){
+        try {
+            PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT * FROM " +
+                    USER_TABLE
+                    + " WHERE " + EMAIL + "=?" + " AND " + PASSWORD + " =?");
+            ps.setString(1, email);
+            ps.setString(2, password);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
 //             now get all attributes of a user to then create said user and return it (if it exists)
-            String strUuid = rs.getString(USER_UUID);
-            UUID uuid = UUID.fromString(strUuid);
-            String username = rs.getString(USERNAME);
-            String first = rs.getString(FIRST_NAME);
-            String last = rs.getString(LAST_NAME);
-            Date creationDate = rs.getDate(CREATION_DATE);
-            Date lastAccessDate = rs.getDate(LAST_ACCESS_DATE);
+                String strUuid = rs.getString(USER_UUID);
+                UUID uuid = UUID.fromString(strUuid);
+                String username = rs.getString(USERNAME);
+                String first = rs.getString(FIRST_NAME);
+                String last = rs.getString(LAST_NAME);
+                Date creationDate = rs.getDate(CREATION_DATE);
+                Date lastAccessDate = rs.getDate(LAST_ACCESS_DATE);
 
-            return new User(uuid,username,email,first,last,creationDate,lastAccessDate);
+                return new User(uuid, username, email, first, last, creationDate, lastAccessDate);
+            }
+        } catch (SQLException e) {
+            System.out.println("Connection error");
         }
         return null;
     }

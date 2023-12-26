@@ -21,6 +21,7 @@ public class DbConnection {
             );
         } catch (Exception e) {
             System.out.println("Unable to connect to database :(");
+            return;
         }
         System.out.println("Connected to tunetracker database!");
     }
@@ -32,6 +33,10 @@ public class DbConnection {
      * @author Thomas Garcia
      * */
     public Connection getCon() {
+        if (this.con == null){
+            System.out.println("CONNECTION NULL SOMEHOW BRUH");
+            return null;
+        }
         return this.con;
 
     }

@@ -20,7 +20,7 @@ public class Main {
 
         Scanner scanner = new Scanner(System.in);
 
-        while (true){
+        while (sql.getCon()!=null){
             System.out.println("Enter a command - if stuck enter 'help' for list of commands");
             String input = scanner.nextLine().toLowerCase().trim();
             if (input.equals("q")) break;
