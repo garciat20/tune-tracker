@@ -50,6 +50,7 @@ public class Commands {
     }
 
     public void logout(){
+        // update last access time
         this.loggedIn = null;
     }
 
@@ -59,15 +60,15 @@ public class Commands {
             return;
         }
         System.out.println("Enter first name");
-        String first = this.scanner.nextLine();
+        String first = this.scanner.nextLine().trim();
         System.out.println("Enter last name");
-        String last = this.scanner.nextLine();
+        String last = this.scanner.nextLine().trim();
         System.out.println("Enter username");
-        String username = this.scanner.nextLine();
+        String username = this.scanner.nextLine().trim();
         System.out.println("Enter email");
-        String email = this.scanner.nextLine();
+        String email = this.scanner.nextLine().trim();
         System.out.println("Enter password");
-        String password = DigestUtils.sha256Hex(this.scanner.nextLine());
+        String password = DigestUtils.sha256Hex(this.scanner.nextLine().trim());
 //        LocalDate create_date = LocalDate.now(); //
         long currentTimeInMillis = System.currentTimeMillis();
         Date creationDate = new Date(currentTimeInMillis);
@@ -80,6 +81,22 @@ public class Commands {
     }
 
     public void login(){
+        if (this.loggedIn != null){
+            System.out.println("You're already logged in! Enter 'help' for commands to enter!");
+            return;
+        }
+        System.out.print("Enter email: ");
+        String email = this.scanner.nextLine().trim();
+        System.out.println();
+        System.out.print("Enter password: ");
+        String password = DigestUtils.sha256Hex(this.scanner.nextLine().trim());
+        System.out.println();
+        // make a query to compare email and passwords --> if valid set it to new user
+        // check if user is still null, if it is, invalid credentials
+        // if user is valid --> update access time
+        // if
+
+
 
     }
 

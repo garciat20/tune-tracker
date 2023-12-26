@@ -4,11 +4,12 @@ import backend.tunetracker.Main;
 import backend.tunetracker.model.User;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserSql {
     // Table(s)
-    private static final String TABLE = "user";
+    private static final String USER_TABLE = "user";
     // Column(s)
     private static final String USER_UUID = "uuid";
     private static final String FIRST_NAME = "first_name";
@@ -22,7 +23,7 @@ public class UserSql {
     //
     public static void insertUser(User user) throws SQLException{
         PreparedStatement ps = Main.sql.getCon().prepareStatement("INSERT INTO " +
-                TABLE + "("+
+                USER_TABLE + "("+
                 USER_UUID+ ", " + USERNAME + ", " + PASSWORD + ", " +
                 EMAIL + ", " + LAST_NAME + ", " + FIRST_NAME + ", " +
                 CREATION_DATE + ", " + LAST_ACCESS_DATE +
@@ -37,4 +38,24 @@ public class UserSql {
         ps.setDate(8,user.getLastAccessDate());
         ps.execute();
     }
+
+    public static void viewProfile(String email){
+        // execute a query to get a user based on email
+        // ResultSet then iterate through items in result set
+        // print out said items
+    }
+
+    public static User selectByEmailPassword(String email, String password)throws SQLException{
+        PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT * FROM " +
+                USER_TABLE
+                + " WHERE " + EMAIL + "=?" + " AND " + PASSWORD + " =?");
+
+        ps.setString(1, email);
+        ps.setString(2, password);
+        ResultSet rs = ps.executeQuery();
+//        if (rs.next()){
+            // now get all attributes of a user to then create said user and return it (if it exists)
+//        }
+    }
+
 }
