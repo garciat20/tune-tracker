@@ -1,14 +1,13 @@
 package backend.tunetracker.controller;
 
 import backend.tunetracker.Main;
+import backend.tunetracker.db.entity.UserSql;
 import backend.tunetracker.model.User;
 import org.apache.commons.codec.digest.DigestUtils;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.LocalDate;
+import java.sql.*;
 import java.util.*;
+import java.sql.Date;
 
 public class Commands {
     private final HashMap<String, Integer> command_reference = new HashMap<>(); // store possbile commands
@@ -70,13 +69,15 @@ public class Commands {
         System.out.println("Enter password");
         String password = DigestUtils.sha256Hex(this.scanner.nextLine());
 //        LocalDate create_date = LocalDate.now(); //
-        String creationDate = LocalDate.now().toString();
-        User newUser = new User(UUID.randomUUID(),username,password,email,first,last);
-
-
-
+        long currentTimeInMillis = System.currentTimeMillis();
+        Date creationDate = new Date(currentTimeInMillis);
+        User newUser = new User(UUID.randomUUID(),username,password,email,first,last,creationDate, creationDate);
+        try {
+            UserSql.insertUser(newUser);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
-
 
     public void login(){
 
