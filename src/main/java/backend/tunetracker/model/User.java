@@ -9,7 +9,6 @@ import java.util.UUID;
 public class User {
     private final UUID uuid;
     private String username;
-    private String password;
     private String email;
     private String firstName;
     private String lastName;
@@ -17,10 +16,9 @@ public class User {
     private Date lastAccessDate;
 
 
-    public User(UUID uuid, String username, String password, String email, String firstName, String lastName, Date creationDate, Date lastAccessDate){
+    public User(UUID uuid, String username, String email, String firstName, String lastName, Date creationDate, Date lastAccessDate){
         this.uuid = uuid;
         this.username = username;
-        this.password = password;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -41,10 +39,6 @@ public class User {
 
     public String getLastName() {
         return lastName;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public String getUsername() {

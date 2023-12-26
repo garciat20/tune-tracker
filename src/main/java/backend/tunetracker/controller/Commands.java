@@ -6,6 +6,8 @@ import backend.tunetracker.model.User;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 import java.sql.Date;
 
@@ -34,7 +36,7 @@ public class Commands {
         this.loggedIn = null; // initialize commands in Main, so by default no one is logged in.
     }
 
-    public void parseInput(String input){
+    public void parseInput(String input) throws SQLException {
         Integer commandNumber = command_reference.get(input);
         commandNumber = (commandNumber != null) ? commandNumber : 0; // checking if 0, if so no valid command
 
@@ -52,6 +54,7 @@ public class Commands {
     public void logout(){
         // update last access time
         this.loggedIn = null;
+        System.out.println("You have logged out");
     }
 
     public void createUser(){
@@ -69,18 +72,21 @@ public class Commands {
         String email = this.scanner.nextLine().trim();
         System.out.println("Enter password");
         String password = DigestUtils.sha256Hex(this.scanner.nextLine().trim());
-//        LocalDate create_date = LocalDate.now(); //
-        long currentTimeInMillis = System.currentTimeMillis();
-        Date creationDate = new Date(currentTimeInMillis);
-        User newUser = new User(UUID.randomUUID(),username,password,email,first,last,creationDate, creationDate);
+
+        LocalDate localDate = LocalDate.now();
+        Date creationDate = Date.valueOf(localDate);
+
+        User newUser = new User(UUID.randomUUID(),username,email,first,last,creationDate, creationDate);
         try {
-            UserSql.insertUser(newUser);
+            UserSql.insertUser(newUser, password);
+            System.out.println("User created!");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            System.out.println("Error when creating new user :(");
         }
     }
 
-    public void login(){
+    public void login() {
         if (this.loggedIn != null){
             System.out.println("You're already logged in! Enter 'help' for commands to enter!");
             return;
@@ -91,16 +97,22 @@ public class Commands {
         System.out.print("Enter password: ");
         String password = DigestUtils.sha256Hex(this.scanner.nextLine().trim());
         System.out.println();
-        // make a query to compare email and passwords --> if valid set it to new user
-        // check if user is still null, if it is, invalid credentials
-        // if user is valid --> update access time
-        // if
-
-
+        try {
+            this.loggedIn = UserSql.selectByEmailPassword(email,password);
+            if (this.loggedIn != null){
+                UserSql.updateLastAccessTime(this.loggedIn.getUuid());
+                System.out.println("Welcome back " + this.loggedIn.getUsername() + "! Enter 'help' for commands :)");
+                return;
+            }
+        } catch (SQLException e) {
+            System.out.println("Invalid credentials");
+        }
+        System.out.println("Invalid credentials");
 
     }
 
     public void viewProfile(){
+//        this.scanner.nextLine().trim();
 
     }
 

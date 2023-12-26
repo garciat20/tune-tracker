@@ -31,8 +31,9 @@ public class DbConnection {
      *
      * @author Thomas Garcia
      * */
-    public Connection getCon(){
+    public Connection getCon() {
         return this.con;
+
     }
 
     /**

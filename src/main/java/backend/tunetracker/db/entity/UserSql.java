@@ -3,9 +3,13 @@ package backend.tunetracker.db.entity;
 import backend.tunetracker.Main;
 import backend.tunetracker.model.User;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.Queue;
+import java.util.UUID;
 
 public class UserSql {
     // Table(s)
@@ -21,7 +25,7 @@ public class UserSql {
     private static final String EMAIL = "email";
     // INSERT INTO USERS(static final) VALUES ()
     //
-    public static void insertUser(User user) throws SQLException{
+    public static void insertUser(User user, String password) throws SQLException{
         PreparedStatement ps = Main.sql.getCon().prepareStatement("INSERT INTO " +
                 USER_TABLE + "("+
                 USER_UUID+ ", " + USERNAME + ", " + PASSWORD + ", " +
@@ -30,7 +34,7 @@ public class UserSql {
                 ") VALUES (?,?,?,?,?,?,?,?)");
         ps.setString(1, user.getUuid().toString());
         ps.setString(2, user.getUsername());
-        ps.setString(3, user.getPassword());
+        ps.setString(3, password);
         ps.setString(4, user.getEmail());
         ps.setString(5, user.getLastName());
         ps.setString(6, user.getFirstName());
@@ -39,10 +43,15 @@ public class UserSql {
         ps.execute();
     }
 
-    public static void viewProfile(String email){
+    public static void viewProfile(String email)throws SQLException{
         // execute a query to get a user based on email
         // ResultSet then iterate through items in result set
         // print out said items
+//        PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT * FROM "
+//            + USER_TABLE
+//            + "WHERE " + EMAIL + " =? ");
+//        ps.setString(1, email);
+
     }
 
     public static User selectByEmailPassword(String email, String password)throws SQLException{
@@ -53,9 +62,30 @@ public class UserSql {
         ps.setString(1, email);
         ps.setString(2, password);
         ResultSet rs = ps.executeQuery();
-//        if (rs.next()){
-            // now get all attributes of a user to then create said user and return it (if it exists)
-//        }
+        if (rs.next()){
+//             now get all attributes of a user to then create said user and return it (if it exists)
+            String strUuid = rs.getString(USER_UUID);
+            UUID uuid = UUID.fromString(strUuid);
+            String username = rs.getString(USERNAME);
+            String first = rs.getString(FIRST_NAME);
+            String last = rs.getString(LAST_NAME);
+            Date creationDate = rs.getDate(CREATION_DATE);
+            Date lastAccessDate = rs.getDate(LAST_ACCESS_DATE);
+
+            return new User(uuid,username,email,first,last,creationDate,lastAccessDate);
+        }
+        return null;
+    }
+
+    public static void updateLastAccessTime(UUID uuid)throws SQLException {
+        PreparedStatement ps = Main.sql.getCon().prepareStatement("UPDATE "
+        + USER_TABLE
+        + " SET " + LAST_ACCESS_DATE + "=? WHERE "+ USER_UUID +" =?");
+        LocalDate localDate = LocalDate.now();
+        Date lastAccessTime = Date.valueOf(localDate);
+        ps.setDate(1, lastAccessTime);
+        ps.setString(2, uuid.toString());
+
     }
 
 }
