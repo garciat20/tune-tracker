@@ -93,10 +93,8 @@ public class Commands {
         }
         System.out.print("Enter email: ");
         String email = this.scanner.nextLine().trim();
-        System.out.println();
         System.out.print("Enter password: ");
         String password = DigestUtils.sha256Hex(this.scanner.nextLine().trim());
-        System.out.println();
         try {
             this.loggedIn = UserSql.selectByEmailPassword(email,password);
             if (this.loggedIn != null){

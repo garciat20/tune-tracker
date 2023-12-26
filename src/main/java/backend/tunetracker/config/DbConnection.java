@@ -34,10 +34,6 @@ public class DbConnection {
      * @author Thomas Garcia
      * */
     public Connection getCon() {
-        if (this.con == null){
-            System.out.println("CONNECTION NULL SOMEHOW BRUH");
-            return null;
-        }
         return this.con;
 
     }
