@@ -2,6 +2,8 @@ package backend.tunetracker;
 
 import backend.tunetracker.controller.Commands;
 import backend.tunetracker.config.DbConnection;
+import backend.tunetracker.seeddata.Loader;
+
 import java.util.Scanner;
 import java.sql.SQLException;
 
@@ -16,12 +18,13 @@ public class Main {
     public static void main(String[] args) throws SQLException {
         sql = new DbConnection();
 
+        Loader.loadDatabase();
+
         Commands commands = new Commands();
 
         Scanner scanner = new Scanner(System.in);
-
+        System.out.println("Enter a command - if stuck enter 'help' for list of commands");
         while (sql.getCon()!=null){
-            System.out.println("Enter a command - if stuck enter 'help' for list of commands");
             String input = scanner.nextLine().toLowerCase().trim();
             if (input.equals("q")) break;
             commands.parseInput(input);

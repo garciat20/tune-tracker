@@ -16,15 +16,19 @@ public class Commands {
     private final Scanner scanner = new Scanner(System.in); // by default take in CLI commands
     private User loggedIn; // commands are only issued if logged in
     private final String helpMessage = """
+            \n
+            ================================================================================
             Commands: 
             q: quit/ close application
             login: enter credentials to log into account
             create_user: to create a new account to login and use application functionality
             view_profile: view information about a user
             help: to view commands to utilize database
+            ================================================================================
             """;
 
     public Commands() {
+
         // make commands underscore instead of space for simplicility sake
         command_reference.put("help", 1);
         command_reference.put("login", 2);
@@ -79,7 +83,7 @@ public class Commands {
         User newUser = new User(UUID.randomUUID(),username,email,first,last,creationDate, creationDate);
         try {
             UserSql.insertUser(newUser, password);
-            System.out.println("User created!");
+            System.out.println("User created! Enter 'login' to use new account! Or enter 'help' for more assistance");
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Error when creating new user :(");
@@ -98,19 +102,20 @@ public class Commands {
         try {
             this.loggedIn = UserSql.selectByEmailPassword(email,password);
             if (this.loggedIn != null){
-                UserSql.updateLastAccessTime(this.loggedIn.getUuid());
+                UserSql.updateLastAccessTime(this.loggedIn.getUuid()); // update the last time logged in for user
                 System.out.println("Welcome back " + this.loggedIn.getUsername() + "! Enter 'help' for commands :)");
                 return;
             }
         } catch (SQLException e) {
-            System.out.println("Invalid credentials");
+            System.out.println("oops something went wrong with sql");
         }
-        System.out.println("Invalid credentials");
+        System.out.println("Invalid credentials: either create a new account or retry logging in - 'help' for guidance");
 
     }
 
     public void viewProfile(){
-//        this.scanner.nextLine().trim();
+        System.out.print("Enter the username of who you want to search: ");
+        String username = this.scanner.nextLine().trim();
 
     }
 

@@ -43,7 +43,8 @@ public class UserSql {
         ps.execute();
     }
 
-    public static void viewProfile(String email)throws SQLException{
+    public static void viewProfile(String username)throws SQLException{
+//        PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT")
         // execute a query to get a user based on email
         // ResultSet then iterate through items in result set
         // print out said items
