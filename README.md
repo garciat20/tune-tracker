@@ -39,7 +39,7 @@ Thomas Garcia thomasakulla@gmail.com
 
 ## Version History
 
-* 0.2
+* 1.0.0-alpha.1
   *  Functionality added to create a new user, view a profile (limited), login, logout, and added 'help' command to
   offer help on current version of application.
 
