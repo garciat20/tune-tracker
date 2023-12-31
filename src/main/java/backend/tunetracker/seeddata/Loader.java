@@ -40,7 +40,7 @@ public class Loader {
     public static void buildTables(){
         try {
             String userTable = "CREATE TABLE IF NOT EXISTS user(" +
-                            "uuid CHAR(36) PRIMARY KEY, username VARCHAR(36), password CHAR(64), email VARCHAR(36),"+
+                            "uuid CHAR(36) PRIMARY KEY, username VARCHAR(36) UNIQUE, password CHAR(64), email VARCHAR(36),"+
                             "last_name VARCHAR(30), first_name VARCHAR(30), creation_date DATE, last_access_date DATE" +
               ");";
 

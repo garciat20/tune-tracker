@@ -11,7 +11,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 import java.util.UUID;
 
 public class UserSql {
@@ -52,15 +51,44 @@ public class UserSql {
     }
 
     public static void viewProfile(String username)throws SQLException{
-//        PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT")
-        // execute a query to get a user based on email
-        // ResultSet then iterate through items in result set
-        // print out said items
-//        PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT * FROM "
-//            + USER_TABLE
-//            + "WHERE " + EMAIL + " =? ");
-//        ps.setString(1, email);
+        PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT "+ FOLLOWER_ID + " FROM "
+        + FOLLOWS_TABLE +" WHERE followee_id =?;");
 
+        String uuidFromUsername = getUUID(username); // get uuid
+
+        ps.setString(1, uuidFromUsername); // set it from uuid
+        ResultSet rs = ps.executeQuery(); // results from sql table
+
+        System.out.println("Followers of " + username + ": "); // traverse thru sql
+        // finish below
+        while (rs.next()){
+            String follower = getUsername(rs.getString(USER_UUID));
+            System.out.println(follower);
+        }
+
+    }
+
+    public static String getUUID(String username) throws SQLException {
+        PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT " + USER_UUID + " FROM " + USER_TABLE +
+                " WHERE "+ USERNAME + " =?;");
+        ps.setString(1,username);
+        ResultSet rs = ps.executeQuery();
+
+        /**
+         * ERROR BELOW DEBUG
+         * */
+        String uuid = rs.getString(USER_UUID);
+        return uuid;
+    }
+
+    public static String getUsername(String uuid)throws SQLException{
+        PreparedStatement ps = Main.sql.getCon().prepareStatement(
+                "SELECT " + USERNAME + " FROM " + USER_TABLE + " WHERE " + USER_UUID +" =?;"
+        );
+        ps.setString(1, uuid);
+        ResultSet rs = ps.executeQuery();
+        String username = rs.getString(USERNAME);
+        return username;
     }
 
     public static User selectByEmailPassword(String email, String password){
@@ -132,5 +160,7 @@ public class UserSql {
             throw new RuntimeException(e);
         }
     }
+
+
 
 }

@@ -112,9 +112,10 @@ public class Commands {
 
     }
 
-    public void viewProfile(){
+    public void viewProfile() throws SQLException {
         System.out.print("Enter the username of who you want to search: ");
         String username = this.scanner.nextLine().trim();
+        UserSql.viewProfile(username);
 
     }
 
