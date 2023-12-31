@@ -3,6 +3,7 @@ package backend.tunetracker.seeddata;
 import backend.tunetracker.Main;
 import backend.tunetracker.db.helpers.DateGenerator;
 import backend.tunetracker.db.helpers.EnglishOnly;
+import backend.tunetracker.db.helpers.MillisecondsConverter;
 import com.github.javafaker.Faker;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
@@ -45,7 +46,7 @@ public class Loader {
 
             String songsTables = "CREATE TABLE IF NOT EXISTS songs(" +
                     "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, song_name VARCHAR(50) NOT NULL," +
-                    "release_year DATE);";
+                    "release_year DATE, duration TIME);";
 
             String artistTable = "CREATE TABLE IF NOT EXISTS artist("+
                     "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, name VARCHAR(65));";
@@ -82,20 +83,25 @@ public class Loader {
                 int artistKey = -1;
                 int songKey = -1;
                 String song = line[4];
+                String millisecondsString= line[6];
+                Time duration = MillisecondsConverter.duration(millisecondsString);
+
                 if (EnglishOnly.isValidEnglish(song))
                     try {
                         // SONG TABLE
                         PreparedStatement songInsertion = Main.sql.getCon().prepareStatement(
-                        "INSERT INTO songs(song_name, release_year) VALUES(" +
-                            "?, ?);",PreparedStatement.RETURN_GENERATED_KEYS
+                        "INSERT INTO songs(song_name, release_year, duration) VALUES(" +
+                            "?, ?,?);",PreparedStatement.RETURN_GENERATED_KEYS
                         );
 
                         songInsertion.setString(1, song);
-                            Date date = DateGenerator.dateGenerator();
+                        Date date = DateGenerator.dateGenerator();
 //                            System.out.println(date.toString());
 //                            System.out.println(date);
-                            songInsertion.setDate(2, date);
-                            songInsertion.execute();
+                        songInsertion.setDate(2, date);
+                        songInsertion.setTime(3,duration);
+                        songInsertion.execute();
+
 
                         // GET AUTO_INCREMENTED KEY USE LATER
                         ResultSet songKeyResult = songInsertion.getGeneratedKeys();
@@ -150,9 +156,14 @@ public class Loader {
 
     public static void loadUsers(){
         Faker faker = new Faker();
+
         String firstName = faker.name().firstName();
         String lastName = faker.name().lastName();
         String username = faker.name().username();
+        String email = faker.internet().emailAddress();
+        String password = faker.internet().password();
+
+
 
     }
 
@@ -171,12 +182,14 @@ public class Loader {
 
 
     public static void loadDatabase() throws CsvValidationException, IOException, SQLException {
+        System.out.println("loading database...");
         databaseMaker(); //make sure we have database
         dropTables();
         buildTables(); // make sure tablesa rebuilt
         // load data
         loadMusic();
 //        loadUsers();
+        System.out.println("database loaded!");
     }
 
 }

@@ -16,7 +16,6 @@ public class Commands {
     private final Scanner scanner = new Scanner(System.in); // by default take in CLI commands
     private User loggedIn; // commands are only issued if logged in
     private final String helpMessage = """
-            \n
             ================================================================================
             Commands: 
             q: quit/ close application
@@ -66,15 +65,15 @@ public class Commands {
             System.out.println("You're already logged in! Enter 'logout' to create a new user!");
             return;
         }
-        System.out.println("Enter first name");
+        System.out.print("Enter first name: ");
         String first = this.scanner.nextLine().trim();
-        System.out.println("Enter last name");
+        System.out.print("Enter last name: ");
         String last = this.scanner.nextLine().trim();
-        System.out.println("Enter username");
+        System.out.print("Enter username: ");
         String username = this.scanner.nextLine().trim();
-        System.out.println("Enter email");
+        System.out.print("Enter email: ");
         String email = this.scanner.nextLine().trim();
-        System.out.println("Enter password");
+        System.out.print("Enter password: ");
         String password = DigestUtils.sha256Hex(this.scanner.nextLine().trim());
 
         LocalDate localDate = LocalDate.now();
