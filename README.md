@@ -39,11 +39,19 @@ Thomas Garcia thomasakulla@gmail.com
 
 ## Version History
 
+* 0.2
+  *  Functionality added to create a new user, view a profile (limited), login, logout, and added 'help' command to
+  offer help on current version of application.
+
 * 0.1
     * Able to connect to database, no functionality yet besides connecting to database. No JUnit testing yet.
  
 ## Future/ Goals
 
-* Fully test out application to make sure edge cases are covered and no major bugs using JUnit
-* Use Spring Boot to retrieve songs from a database of songs and enter retrieved songs into database.
+* Add a follow command so a user can follow another user.
+* Add a playlist/ collection table where users can add their favorite songs to.
+* Cover edge cases such as duplicate usernames, and make sure empty entries aren't valid for creating an account.
+* Clean up code in Loader.java.
+* Add more documentation.
+* Fully test out application to make sure edge cases are covered and no major bugs using JUnit.
 * Creating a frontend to connect to the backend using Javascript, and Javascript frameworks such as React or Vue and Bootstrap.

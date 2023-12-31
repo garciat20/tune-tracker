@@ -34,7 +34,6 @@ public class Commands {
         command_reference.put("logout", 3);
         command_reference.put("create_user", 4);
         command_reference.put("view_profile", 5);
-        command_reference.put("get_all_info", 6);
 
         this.loggedIn = null; // initialize commands in Main, so by default no one is logged in.
     }
