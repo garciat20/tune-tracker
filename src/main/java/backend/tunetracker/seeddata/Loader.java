@@ -155,14 +155,15 @@ public class Loader {
                     } catch (SQLException e){
                         throw new RuntimeException(e);
                     }
-
             }
     }
 
-    public static void loadUsers(){
+    public static void loadUsers() throws SQLException {
         Faker faker = new Faker();
         LocalDate lD = LocalDate.now();
         Date creationDate = Date.valueOf(lD);
+        insertDummyUser();
+
 
         for (int i =0; i < 505; i++){
             String firstName = faker.name().firstName();
@@ -183,17 +184,26 @@ public class Loader {
         }
     }
 
+    public static void insertDummyUser() throws SQLException{
+        LocalDate date = LocalDate.now();
+        Date dateInsert = Date.valueOf(date);
+        User dummy = new User(UUID.randomUUID(), "dummy", "dummy@gmail.com", "first name",
+                "last name", dateInsert, dateInsert);
+        UserSql.insertUser(dummy, "password");
+    }
 
     public static void loadFollowers() throws SQLException {
         List<UUID> uuids = UserSql.getAllUuid();
         int counter = 0;
+        String dummyUuid = UserSql.getUUID("dummy");
         while (counter < uuids.size()-1){
 
             UUID uuid1 = uuids.get(counter);
             counter ++;
             UUID uuid2 = uuids.get(counter);
             UserSql.followPerson(uuid1,uuid2);
-
+            UserSql.followPerson(UUID.fromString(dummyUuid), uuid1);
+            UserSql.followPerson(uuid2, UUID.fromString(dummyUuid));
             counter ++;
         }
 

@@ -44,12 +44,11 @@ public class Commands {
         commandNumber = (commandNumber != null) ? commandNumber : 0; // checking if 0, if so no valid command
 
         switch (commandNumber){
-            case 1 -> System.out.println(this.helpMessage);
+            case 1 -> System.out.print(this.helpMessage);
             case 2 -> login();
             case 3 -> logout();
             case 4 -> createUser();
             case 5 -> viewProfile();
-            case 6 -> getUsernames();
             default -> System.out.println("Invalid command, enter 'help' for assistance");
         }
     }
@@ -57,7 +56,7 @@ public class Commands {
     public void logout(){
         // update last access time
         this.loggedIn = null;
-        System.out.println("You have logged out");
+        System.out.println("You have logged out. Enter 'help' for more commands");
     }
 
     public void createUser(){
@@ -115,29 +114,29 @@ public class Commands {
     public void viewProfile() throws SQLException {
         System.out.print("Enter the username of who you want to search: ");
         String username = this.scanner.nextLine().trim();
+        System.out.println("DIPLAYING " + username + "'s info:");
         UserSql.viewProfile(username);
-
     }
 
-    public void getUsernames(){
-        System.out.println("getting info");
-        // if works NEXT TRY OUT WITH =? PART OF PREPARED STATMENT
-        ArrayList<String> all_usernames = new ArrayList<>();
-        // trasnfer informatin for queries to the respective classes if it is more specfic to separate code
-
-        try {
-            PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT username from tunetracker.user ");
-            ResultSet queryResults = ps.executeQuery();
-            while (queryResults.next()){
-                String username = queryResults.getString("username");
-                all_usernames.add(username);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        for (String username: all_usernames){
-            System.out.println(username);
-        }
-    }
+//    public void getUsernames(){
+//        System.out.println("getting info");
+//        // if works NEXT TRY OUT WITH =? PART OF PREPARED STATMENT
+//        ArrayList<String> all_usernames = new ArrayList<>();
+//        // trasnfer informatin for queries to the respective classes if it is more specfic to separate code
+//
+//        try {
+//            PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT username from tunetracker.user ");
+//            ResultSet queryResults = ps.executeQuery();
+//            while (queryResults.next()){
+//                String username = queryResults.getString("username");
+//                all_usernames.add(username);
+//            }
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        for (String username: all_usernames){
+//            System.out.println(username);
+//        }
+//    }
 }

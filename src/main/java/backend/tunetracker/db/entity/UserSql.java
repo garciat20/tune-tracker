@@ -50,7 +50,7 @@ public class UserSql {
         ps.execute();
     }
 
-    public static void viewProfile(String username)throws SQLException{
+    public static void viewFollowers(String username)throws SQLException{
         PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT "+ FOLLOWER_ID + " FROM "
         + FOLLOWS_TABLE +" WHERE followee_id =?;");
 
@@ -62,10 +62,21 @@ public class UserSql {
         System.out.println("Followers of " + username + ": "); // traverse thru sql
         // finish below
         while (rs.next()){
-            String follower = getUsername(rs.getString(USER_UUID));
+            String uuidColumn = rs.getString(FOLLOWER_ID);
+            String follower = getUsername(uuidColumn);
             System.out.println(follower);
         }
 
+    }
+
+    public static void viewProfile(String username) throws SQLException {
+        int followerCount = getFollowerCount(username);
+        System.out.println("Number of followers: " + String.valueOf(followerCount));
+        System.out.println("Number of people "+ username+ " is following: (in progress)");
+        System.out.println("Playliats: (in progress) ");
+        System.out.println("Top 5 Recommended songs: (in progress)");
+        System.out.println("DONE displaying " + username + "'s info");
+        System.out.println("Enter 'help' for more commands!");
     }
 
     public static String getUUID(String username) throws SQLException {
@@ -74,11 +85,11 @@ public class UserSql {
         ps.setString(1,username);
         ResultSet rs = ps.executeQuery();
 
-        /**
-         * ERROR BELOW DEBUG
-         * */
-        String uuid = rs.getString(USER_UUID);
-        return uuid;
+
+        if (rs.next()){
+            return rs.getString(USER_UUID);
+        }
+        return null;
     }
 
     public static String getUsername(String uuid)throws SQLException{
@@ -87,8 +98,11 @@ public class UserSql {
         );
         ps.setString(1, uuid);
         ResultSet rs = ps.executeQuery();
-        String username = rs.getString(USERNAME);
-        return username;
+        if (rs.next()){
+            String username = rs.getString(USERNAME);
+            return username;
+        }
+        return null;
     }
 
     public static User selectByEmailPassword(String email, String password){
@@ -161,6 +175,20 @@ public class UserSql {
         }
     }
 
+    public static int getFollowerCount(String username) throws SQLException {
+        String uuid = getUUID(username);
+        PreparedStatement ps = Main.sql.getCon().prepareStatement(
+                "SELECT COUNT(" + FOLLOWER_ID +") FROM "+
+                        FOLLOWS_TABLE + " WHERE " + FOLLOWEE_ID +" =?;"
+        );
+        ps.setString(1, uuid);
+
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()){
+            return rs.getInt(1);
+        }
+        return -1;
+    }
 
 
 }
