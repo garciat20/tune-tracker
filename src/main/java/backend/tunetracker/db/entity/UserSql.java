@@ -2,18 +2,22 @@ package backend.tunetracker.db.entity;
 
 import backend.tunetracker.Main;
 import backend.tunetracker.model.User;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
 import java.util.UUID;
 
 public class UserSql {
     // Table(s)
     private static final String USER_TABLE = "user";
+    private static final String FOLLOWS_TABLE = "follows";
     // Column(s)
     private static final String USER_UUID = "uuid";
     private static final String FIRST_NAME = "first_name";
@@ -23,6 +27,8 @@ public class UserSql {
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
     private static final String EMAIL = "email";
+    private static final String FOLLOWER_ID = "follower_id";
+    private static final String FOLLOWEE_ID = "followee_id";
     // INSERT INTO USERS(static final) VALUES ()
     //
     public static void insertUser(User user, String password) throws SQLException{
@@ -32,9 +38,11 @@ public class UserSql {
                 EMAIL + ", " + LAST_NAME + ", " + FIRST_NAME + ", " +
                 CREATION_DATE + ", " + LAST_ACCESS_DATE +
                 ") VALUES (?,?,?,?,?,?,?,?)");
+
+
         ps.setString(1, user.getUuid().toString());
         ps.setString(2, user.getUsername());
-        ps.setString(3, password);
+        ps.setString(3, DigestUtils.sha256Hex(password));
         ps.setString(4, user.getEmail());
         ps.setString(5, user.getLastName());
         ps.setString(6, user.getFirstName());
@@ -90,6 +98,39 @@ public class UserSql {
         ps.setDate(1, lastAccessTime);
         ps.setString(2, uuid.toString());
 
+    }
+
+    public static List<UUID> getAllUuid() throws SQLException {
+        PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT "+
+                USER_UUID + " FROM "+ USER_TABLE +";");
+        ResultSet rs = ps.executeQuery();
+        ArrayList<UUID> uuidList = new ArrayList<>();
+
+        while (rs.next()){
+            String uuidStr = rs.getString("uuid");
+            uuidList.add(UUID.fromString(uuidStr));
+        }
+        return uuidList;
+    }
+
+
+    public static void followPerson(UUID followerID, UUID followeeID){
+        String followerStringId = followerID.toString();
+        String followeeStringId = followeeID.toString();
+
+        try {
+            PreparedStatement ps = Main.sql.getCon().prepareStatement("INSERT INTO " +
+                    FOLLOWS_TABLE + " (" +
+                    FOLLOWER_ID + "," + FOLLOWEE_ID +
+                    ") VALUES(" +
+                    "?,?);"
+            );
+            ps.setString(1, followerStringId);
+            ps.setString(2, followeeStringId);
+            ps.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

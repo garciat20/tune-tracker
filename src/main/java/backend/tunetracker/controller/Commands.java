@@ -74,7 +74,7 @@ public class Commands {
         System.out.print("Enter email: ");
         String email = this.scanner.nextLine().trim();
         System.out.print("Enter password: ");
-        String password = DigestUtils.sha256Hex(this.scanner.nextLine().trim());
+        String password = this.scanner.nextLine().trim();
 
         LocalDate localDate = LocalDate.now();
         Date creationDate = Date.valueOf(localDate);

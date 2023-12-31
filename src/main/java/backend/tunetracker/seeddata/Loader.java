@@ -1,9 +1,11 @@
 package backend.tunetracker.seeddata;
 
 import backend.tunetracker.Main;
+import backend.tunetracker.db.entity.UserSql;
 import backend.tunetracker.db.helpers.DateGenerator;
 import backend.tunetracker.db.helpers.EnglishOnly;
 import backend.tunetracker.db.helpers.MillisecondsConverter;
+import backend.tunetracker.model.User;
 import com.github.javafaker.Faker;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
@@ -12,8 +14,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
+import java.util.UUID;
 
 public class Loader {
     private static HashSet<String> artistNames = new HashSet<>();
@@ -35,14 +40,14 @@ public class Loader {
     public static void buildTables(){
         try {
             String userTable = "CREATE TABLE IF NOT EXISTS user(" +
-                            "uuid CHAR(36) PRIMARY KEY, username VARCHAR(16), password CHAR(64), email VARCHAR(36),"+
+                            "uuid CHAR(36) PRIMARY KEY, username VARCHAR(36), password CHAR(64), email VARCHAR(36),"+
                             "last_name VARCHAR(30), first_name VARCHAR(30), creation_date DATE, last_access_date DATE" +
               ");";
 
             String followerTable = "CREATE TABLE IF NOT EXISTS follows(" +
-                    "follower_id CHAR(36), followed_id CHAR(36), PRIMARY KEY (follower_id, followed_id)," +
+                    "follower_id CHAR(36), followee_id CHAR(36), PRIMARY KEY (follower_id, followee_id)," +
                     "FOREIGN KEY (follower_id) REFERENCES user(uuid),"+
-                    "FOREIGN KEY (followed_id) REFERENCES user(uuid));";
+                    "FOREIGN KEY (followee_id) REFERENCES user(uuid));";
 
             String songsTables = "CREATE TABLE IF NOT EXISTS songs(" +
                     "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, song_name VARCHAR(50) NOT NULL," +
@@ -156,20 +161,45 @@ public class Loader {
 
     public static void loadUsers(){
         Faker faker = new Faker();
+        LocalDate lD = LocalDate.now();
+        Date creationDate = Date.valueOf(lD);
 
-        String firstName = faker.name().firstName();
-        String lastName = faker.name().lastName();
-        String username = faker.name().username();
-        String email = faker.internet().emailAddress();
-        String password = faker.internet().password();
+        for (int i =0; i < 505; i++){
+            String firstName = faker.name().firstName();
+            String lastName = faker.name().lastName();
+            String username = faker.name().username();
+            String email = faker.internet().emailAddress();
+            String password = faker.internet().password();
+
+            if ((username.length() < 36) && (firstName.length() < 36) && (lastName.length() < 36) && (email.length() < 36) && (password.length() < 36)){
+                User mockUser = new User(UUID.randomUUID(),username,email,firstName,lastName,creationDate, creationDate);
+                try {
+                    UserSql.insertUser(mockUser, password);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    System.out.println("something went wrong with mock user");
+                }
+            }
+        }
+    }
+
+
+    public static void loadFollowers() throws SQLException {
+        List<UUID> uuids = UserSql.getAllUuid();
+        int counter = 0;
+        while (counter < uuids.size()-1){
+
+            UUID uuid1 = uuids.get(counter);
+            counter ++;
+            UUID uuid2 = uuids.get(counter);
+            UserSql.followPerson(uuid1,uuid2);
+
+            counter ++;
+        }
 
 
 
     }
-
-    public static void insertIntoArtist(String artistName){
-
-        }
 
     public static void dropTables() throws SQLException {
         Statement statement = Main.sql.getCon().createStatement();
@@ -188,7 +218,8 @@ public class Loader {
         buildTables(); // make sure tablesa rebuilt
         // load data
         loadMusic();
-//        loadUsers();
+        loadUsers();
+        loadFollowers();
         System.out.println("database loaded!");
     }
 
