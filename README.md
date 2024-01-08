@@ -1,7 +1,7 @@
 # TuneTracker
 
-A prefilled database with songs and fake users. Interacting with CLI can allow users to sign up/ login and perform core functions
-
+A prefilled database with songs and fake users. Interacting with CLI can allow users to sign up/ login and perform core functions.
+Future implementations are at the bottom.
 ## Description
 
 Tunetracker allows users to sign up/ login to access core features of the application such as following/ unfollowing other users, create a playlist, add songs to it, view profile statistics, and recommend songs based on listening history.
@@ -10,7 +10,7 @@ Tunetracker allows users to sign up/ login to access core features of the applic
 
 ### Dependencies
 
-* Download MySQL Server: https://dev.mysql.com/downloads/mysql/
+* Installation setup for mysql for different platforms: https://dev.mysql.com/doc/mysql-getting-started/en/
 * Download MySQL Java Connector and add to classpath: https://dev.mysql.com/downloads/connector/j/5.1.html
 * Download either MySQL workbench or DataGrip to see tables in database update: https://dev.mysql.com/downloads/workbench/ | https://www.jetbrains.com/datagrip/download/#section=mac
 

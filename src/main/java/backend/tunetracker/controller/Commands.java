@@ -117,6 +117,25 @@ public class Commands {
         UserSql.viewProfile(username);
     }
 
+    /**
+     * Prompt user to enter username of the user they wish to follow.
+     * Get ID of follower and followee
+     * With ID's use UserSQL class to enable the action
+     * */
+    public void followUser(){
+
+    }
+
+    public void createPlaylist(){
+        // SCANNER TAKE INPUT FOR NAME OF PLAYLIST
+        // CALL METHOD FROM USERSQL.JAVA
+    }
+
+    public void viewSongs{
+    }
+
+
+
 //    public void getUsernames(){
 //        System.out.println("getting info");
 //        // if works NEXT TRY OUT WITH =? PART OF PREPARED STATMENT

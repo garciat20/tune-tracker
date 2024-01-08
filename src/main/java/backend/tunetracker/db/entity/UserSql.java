@@ -175,6 +175,9 @@ public class UserSql {
         }
     }
 
+    /**
+     * Incorporate this into view_profile
+     * */
     public static int getFollowerCount(String username) throws SQLException {
         String uuid = getUUID(username);
         PreparedStatement ps = Main.sql.getCon().prepareStatement(
@@ -188,6 +191,35 @@ public class UserSql {
             return rs.getInt(1);
         }
         return -1;
+    }
+
+
+    /**
+     * Make method to create a playlist
+     * */
+    public static void createUserPlaylist(){
+
+    }
+
+    /**
+     * Make method to add a song to a playlist
+     * */
+    public static void addSongToPlaylist(String song){
+
+    }
+    /**
+     * Make method to view songs from song table
+     * prompt if they'd like to search via filter but that's a FUTURE IMPLEMENTATION
+     * */
+    public static void viewSongs(){
+
+    }
+
+    /**
+     * FUTURE IMPLEMENTION TO FILTER
+     * */
+    public static void filterSongs(String searchCriteria){
+
     }
 
 

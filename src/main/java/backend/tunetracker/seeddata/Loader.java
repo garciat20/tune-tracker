@@ -28,10 +28,10 @@ public class Loader {
         try {
             Statement statement = Main.sql.getCon().createStatement();
             String databaseQuery = "CREATE DATABASE IF NOT EXISTS tunetracker;";
-            statement.execute(databaseQuery);
+            statement.executeUpdate(databaseQuery);
 
             String useDatabase = "USE tunetracker";
-            statement.execute(useDatabase);
+            statement.executeUpdate(useDatabase);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -158,6 +158,10 @@ public class Loader {
             }
     }
 
+
+    /**
+     * TODO: MAKE SURE THERE ISNT ANY DUPLICATE USERS!
+     * */
     public static void loadUsers() throws SQLException {
         Faker faker = new Faker();
         LocalDate lD = LocalDate.now();
@@ -206,8 +210,6 @@ public class Loader {
             UserSql.followPerson(uuid2, UUID.fromString(dummyUuid));
             counter ++;
         }
-
-
 
     }
 
