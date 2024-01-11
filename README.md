@@ -19,7 +19,7 @@ Tunetracker allows users to sign up/ login to access core features of the applic
 * Git clone this repository in your local machine anywhere you like
 * DbConnection.java file may need to be modified (field names such as: url, username, password) based on port number hosting MySQL server, what name you decide to name the database, and what username, password you make for your database.
 * MySQL Workbench: To keep consistency you may make a New Connection using MySQL workbench using the port number: **3306**, using **root** as the username/ password, and then creating a creating a schema called **tunetracker**.
-* DataGrip: I believe in DataGrip you may click on the DataSources category, then enter all the necessary information such as port number (**3306**), **root** as the username/ password, and creating a database called **tunetracker**.
+* DataGrip: Click on the DataSources category, then enter all the necessary information such as port number (**3306**), **root** as the username/ password, and creating a database called **tunetracker**.
 
 ### Executing program
 
