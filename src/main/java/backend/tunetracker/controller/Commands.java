@@ -1,6 +1,7 @@
 package backend.tunetracker.controller;
 
 import backend.tunetracker.Main;
+import backend.tunetracker.db.entity.PlaylistSql;
 import backend.tunetracker.db.entity.UserSql;
 import backend.tunetracker.model.User;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -21,7 +22,9 @@ public class Commands {
             q: quit/ close application
             login: enter credentials to log into account
             create_user: to create a new account to login and use application functionality
-            view_profile: view information about a user
+            view_profile: view information about a user (limited at the moment)
+            follow_user: follower another user
+            create_playlist: create a playlist
             help: to view commands to utilize database
             ================================================================================
             """;
@@ -34,6 +37,8 @@ public class Commands {
         command_reference.put("logout", 3);
         command_reference.put("create_user", 4);
         command_reference.put("view_profile", 5);
+        command_reference.put("follow_user", 6);
+        command_reference.put("create_playlist", 7);
 
         this.loggedIn = null; // initialize commands in Main, so by default no one is logged in.
     }
@@ -48,6 +53,8 @@ public class Commands {
             case 3 -> logout();
             case 4 -> createUser();
             case 5 -> viewProfile();
+            case 6 -> followUser();
+            case 7 -> createPlaylist();
             default -> System.out.println("Invalid command, enter 'help' for assistance");
         }
     }
@@ -111,6 +118,10 @@ public class Commands {
     }
 
     public void viewProfile() throws SQLException {
+        if (this.loggedIn == null){
+            System.out.println("You must be logged in");
+            return;
+        }
         System.out.print("Enter the username of who you want to search: ");
         String username = this.scanner.nextLine().trim();
         System.out.println("DIPLAYING " + username + "'s info:");
@@ -123,16 +134,56 @@ public class Commands {
      * With ID's use UserSQL class to enable the action
      * */
     public void followUser(){
+        if (this.loggedIn == null){
+            System.out.println("You must be logged in");
+            return;
+        }
+        System.out.print("Enter username you wish to follow: ");
+        String username = this.scanner.nextLine().trim();
+        try {
+            String followeeUuid = UserSql.getUUID(username);
+            UserSql.followPerson(this.loggedIn.getUuid(), UUID.fromString(followeeUuid));
+        } catch (SQLException e) {
+            System.out.println("cannot get UUID of user");
+        }
+        System.out.println("Sucessfully followed!");
+
 
     }
 
     public void createPlaylist(){
         // SCANNER TAKE INPUT FOR NAME OF PLAYLIST
         // CALL METHOD FROM USERSQL.JAVA
+        if (this.loggedIn == null){
+            System.out.println("You must be logged in");
+            return;
+        }
+        System.out.print("Enter a name for your playlist: ");
+        String playlistName = this.scanner.nextLine().trim();
+        String uuidString = this.loggedIn.getUuid().toString();
+        PlaylistSql.createUserPlaylist(playlistName, uuidString);
+        System.out.println("Playlist created!");
+
+    }
+
+    public void viewPlaylist(){
+        // show songs from playlist and name of playlist
+    }
+
+    public void renamePlaylist(){
+        // self-explanatory
+    }
+
+    public void deletePlaylist(){
+        // self-explanatory
+    }
+
+    public void addSongToPlaylist(){
+        // self-explanatory
     }
 
     public void viewSongs(){
-        // squash
+        // not to show too much information just display 5 random songs (can have a while loop and break on command)
     }
 
 

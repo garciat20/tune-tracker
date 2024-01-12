@@ -194,33 +194,4 @@ public class UserSql {
     }
 
 
-    /**
-     * Make method to create a playlist
-     * */
-    public static void createUserPlaylist(){
-
-    }
-
-    /**
-     * Make method to add a song to a playlist
-     * */
-    public static void addSongToPlaylist(String song){
-
-    }
-    /**
-     * Make method to view songs from song table
-     * prompt if they'd like to search via filter but that's a FUTURE IMPLEMENTATION
-     * */
-    public static void viewSongs(){
-
-    }
-
-    /**
-     * FUTURE IMPLEMENTION TO FILTER
-     * */
-    public static void filterSongs(String searchCriteria){
-
-    }
-
-
 }

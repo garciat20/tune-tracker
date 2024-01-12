@@ -21,6 +21,10 @@ import java.util.List;
 import java.util.UUID;
 
 public class Loader {
+    /**
+     * TODO: Create playlist for a dummyUser2 as mockdata
+     * TODO: Create dummyUser2
+     * */
     private static HashSet<String> artistNames = new HashSet<>();
     private static HashSet<String> uniqueUsernames = new HashSet<>();
 
@@ -180,7 +184,7 @@ public class Loader {
 
 
     /**
-     * TODO: MAKE SURE THERE ISNT ANY DUPLICATE USERS!
+     * TODO: MAKE SURE THERE ISNT ANY DUPLICATE USERS! --- DONE  I THINK
      * */
     public static void loadUsers() throws SQLException {
         Faker faker = new Faker();
@@ -234,20 +238,32 @@ public class Loader {
 
     }
 
-    public static void dropTables() throws SQLException {
-        Statement statement = Main.sql.getCon().createStatement();
-        statement.executeUpdate("DROP TABLE IF EXISTS artist_songs");
-        statement.executeUpdate("DROP TABLE IF EXISTS artist");
-        statement.executeUpdate("DROP TABLE IF EXISTS songs");
-        statement.executeUpdate("DROP TABLE IF EXISTS follows");
-        statement.executeUpdate("DROP TABLE IF EXISTS user");
+
+
+    public static void dropDatabase() throws SQLException {
+
+        PreparedStatement ps = Main.sql.getCon().prepareStatement("DROP SCHEMA IF EXISTS tunetracker;");
+        ps.executeUpdate();
+//        statement.executeUpdate("DROP TABLE IF EXISTS artist_songs");
+//        statement.executeUpdate("DROP TABLE IF EXISTS artist");
+//        statement.executeUpdate("DROP TABLE IF EXISTS songs");
+//        statement.executeUpdate("DROP TABLE IF EXISTS follows");
+//        statement.executeUpdate("DROP TABLE IF EXISTS user");
+    }
+
+    public static void createDatabase() throws SQLException {
+        PreparedStatement ps = Main.sql.getCon().prepareStatement("CREATE SCHEMA tunetracker;");
+        ps.execute();
+        PreparedStatement useDatabase = Main.sql.getCon().prepareStatement("USE tunetracker;");
+        useDatabase.execute();
     }
 
 
     public static void loadDatabase() throws CsvValidationException, IOException, SQLException {
         System.out.println("loading database...");
-        databaseMaker(); //make sure we have database
-        dropTables();
+//        databaseMaker(); //make sure we have database
+        dropDatabase();
+        createDatabase();
         buildTables(); // make sure tablesa rebuilt
         // load data
         loadMusic();
