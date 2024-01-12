@@ -131,7 +131,8 @@ public class Commands {
         // CALL METHOD FROM USERSQL.JAVA
     }
 
-    public void viewSongs{
+    public void viewSongs(){
+        // squash
     }
 
 

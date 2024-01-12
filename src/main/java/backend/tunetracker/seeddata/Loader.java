@@ -22,7 +22,7 @@ import java.util.UUID;
 
 public class Loader {
     private static HashSet<String> artistNames = new HashSet<>();
-    private static HashSet<String> songNames = new HashSet<>();
+    private static HashSet<String> uniqueUsernames = new HashSet<>();
 
     public static void databaseMaker(){
         try {
@@ -59,6 +59,22 @@ public class Loader {
             String artistSongTable = "CREATE TABLE IF NOT EXISTS artist_songs ("+
                     "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, artist_id INT NOT NULL,"+
                     "song_id INT NOT NULL, FOREIGN KEY (artist_id) REFERENCES artist(id)," +
+                    "FOREIGN KEY (song_id) REFERENCES songs(id));"; // songs(id) --> songs(song_id)
+
+            // reference exists in actual table
+
+            // playlist table --> add to database
+            // _________
+            // |id||name||song_id (references song(id)|
+            String playlistTable = "CREATE TABLE IF NOT EXISTS playlist(" +
+                    "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, playlist_name VARCHAR(32) UNIQUE," +
+                    "user_id CHAR(36) NOT NULL," +
+                    "FOREIGN KEY (user_id) REFERENCES user(uuid));";
+
+            // song id and playlist id
+            String songsInPlaylistTable = "CREATE TABLE IF NOT EXISTS songs_in_playlist(" +
+                    "playlist_id INT NOT NULL, song_id INT NOT NULL," +
+                    "FOREIGN KEY (playlist_id) REFERENCES playlist(id)," +
                     "FOREIGN KEY (song_id) REFERENCES songs(id));";
 
             PreparedStatement createUserTable = Main.sql.getCon().prepareStatement(userTable);
@@ -66,12 +82,16 @@ public class Loader {
             PreparedStatement createSongsTable = Main.sql.getCon().prepareStatement(songsTables);
             PreparedStatement createArtistTable = Main.sql.getCon().prepareStatement(artistTable);
             PreparedStatement createArtistSongTable = Main.sql.getCon().prepareStatement(artistSongTable);
+            PreparedStatement createPlaylistTable = Main.sql.getCon().prepareStatement(playlistTable);
+            PreparedStatement createSongsInPlaylistTable = Main.sql.getCon().prepareStatement(songsInPlaylistTable);
 
             createUserTable.execute();
             createFollowerTable.execute();
             createSongsTable.execute();
             createArtistTable.execute();
             createArtistSongTable.execute();
+            createPlaylistTable.execute();
+            createSongsInPlaylistTable.execute();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -79,7 +99,7 @@ public class Loader {
 
     }
     public static void loadMusic() throws CsvValidationException, IOException {
-            CSVReader reader = new CSVReader(new FileReader("src/main/java/backend/tunetracker/excel/spotify_dataset.csv"));
+            CSVReader reader = new CSVReader(new FileReader("src/main/java/backend/tunetracker/excel/sample_songs.csv"));
             String[] line;
             // skip header
 
@@ -176,7 +196,7 @@ public class Loader {
             String email = faker.internet().emailAddress();
             String password = faker.internet().password();
 
-            if ((username.length() < 36) && (firstName.length() < 36) && (lastName.length() < 36) && (email.length() < 36) && (password.length() < 36)){
+            if (!(uniqueUsernames.contains(username)) && (username.length() < 36) && (firstName.length() < 36) && (lastName.length() < 36) && (email.length() < 36) && (password.length() < 36)){
                 User mockUser = new User(UUID.randomUUID(),username,email,firstName,lastName,creationDate, creationDate);
                 try {
                     UserSql.insertUser(mockUser, password);
@@ -185,6 +205,7 @@ public class Loader {
                     System.out.println("something went wrong with mock user");
                 }
             }
+            uniqueUsernames.add(username);
         }
     }
 
