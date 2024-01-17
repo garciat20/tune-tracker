@@ -117,6 +117,9 @@ public class Commands {
 
     }
 
+    /**
+     * TODO: UTILIZE LOGGED IN USER'S UUID TO VIEW PLAYLIST ETC
+     * */
     public void viewProfile() throws SQLException {
         if (this.loggedIn == null){
             System.out.println("You must be logged in");
@@ -151,6 +154,11 @@ public class Commands {
 
     }
 
+
+    /**
+     * TODO: TEST IF WORKS!
+     *
+     * */
     public void createPlaylist(){
         // SCANNER TAKE INPUT FOR NAME OF PLAYLIST
         // CALL METHOD FROM USERSQL.JAVA
@@ -166,8 +174,20 @@ public class Commands {
 
     }
 
+
+    /**
+     * TODO: TEST IF WORKS
+     */
     public void viewPlaylist(){
         // show songs from playlist and name of playlist
+        System.out.println("Below are the following playlists that you have:");
+
+        PlaylistSql.getPlaylists(this.loggedIn.getUuid().toString());
+        System.out.print("Enter the playlist name you wish to view: ");
+        // print out playlist(s) for a user based on user UUID
+        String playlistName = this.scanner.nextLine().trim();
+        PlaylistSql.getPlaylistSongs(playlistName, this.loggedIn.getUuid().toString());
+
     }
 
     public void renamePlaylist(){

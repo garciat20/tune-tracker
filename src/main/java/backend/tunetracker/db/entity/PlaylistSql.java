@@ -3,6 +3,7 @@ package backend.tunetracker.db.entity;
 import backend.tunetracker.Main;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
@@ -40,7 +41,61 @@ public class PlaylistSql {
     /**
      * TODO: METHODS FOR --> getting a playlist id from a a playlist name
      * */
-    public static void getPlaylistId(String playlistName){
+    public static void getPlaylistSongs(String playlistName, String userUuid){
+        try {
+            PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT" +
+                    PLAYLIST_NAME + " FROM " + PLAYLIST_TABLE + " WHERE " + USER_ID
+            + " =? AND " + PLAYLIST_NAME +" =?;");
+
+            ps.setString(1, userUuid);
+            ps.setString(2, playlistName);
+
+            ResultSet rs = ps.executeQuery();
+            // print playlists for user
+            while (rs.next()){
+                System.out.println(rs.getString("playlist_name"));
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Playlist name error");
+        }
+
+
+    }
+
+    public static int getPlaylistId(String playlistName, String userUuid){
+        int playlistId = -1;
+        try {
+            PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT " + PLAYLIST_ID +
+                    " FROM " + PLAYLIST_TABLE + " WHERE " + PLAYLIST_NAME + " =? AND " +
+                    USER_ID + " =?;");
+            ps.setString(1, playlistName);
+            ps.setString(2, userUuid);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()){
+                playlistId = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println("error getting playlist id");
+        }
+        return  playlistId;
+    }
+
+    public static void getPlaylists(String userUuid){
+        try {
+            PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT " + PLAYLIST_NAME +
+                    " FROM " + PLAYLIST_TABLE + " WHERE " + USER_ID + " =?;");
+            ps.setString(1, userUuid);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()){
+                System.out.println( rs.getString("playlist_name"));
+            }
+        }catch(SQLException e){
+            System.out.println("Issue with getting playlist names for a specific user");
+        }
 
     }
 

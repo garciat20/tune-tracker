@@ -102,6 +102,10 @@ public class Loader {
         }
 
     }
+
+    /**
+     * TODO: REFACTOR CODE TO UTILIZE SongsSql.java, Artistsql.java
+     * */
     public static void loadMusic() throws CsvValidationException, IOException {
             CSVReader reader = new CSVReader(new FileReader("src/main/java/backend/tunetracker/excel/sample_songs.csv"));
             String[] line;
@@ -227,12 +231,12 @@ public class Loader {
         String dummyUuid = UserSql.getUUID("dummy");
         while (counter < uuids.size()-1){
 
-            UUID uuid1 = uuids.get(counter);
+            UUID uuid1 = uuids.get(counter);// get the first user
             counter ++;
-            UUID uuid2 = uuids.get(counter);
+            UUID uuid2 = uuids.get(counter); // get the second user
             UserSql.followPerson(uuid1,uuid2);
-            UserSql.followPerson(UUID.fromString(dummyUuid), uuid1);
-            UserSql.followPerson(uuid2, UUID.fromString(dummyUuid));
+//            UserSql.followPerson(UUID.fromString(dummyUuid), uuid1); // dummy following
+            UserSql.followPerson(uuid2, UUID.fromString(dummyUuid)); // dummy followers
             counter ++;
         }
 

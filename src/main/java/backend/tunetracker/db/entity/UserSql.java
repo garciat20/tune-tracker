@@ -50,6 +50,9 @@ public class UserSql {
         ps.execute();
     }
 
+    /**
+     * TODO: Test if works
+     * */
     public static void viewFollowers(String username)throws SQLException{
         PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT "+ FOLLOWER_ID + " FROM "
         + FOLLOWS_TABLE +" WHERE followee_id =?;");
@@ -71,9 +74,10 @@ public class UserSql {
 
     public static void viewProfile(String username) throws SQLException {
         int followerCount = getFollowerCount(username);
+        int followeeCount = getFolloweeCount(username);
         System.out.println("Number of followers: " + String.valueOf(followerCount));
-        System.out.println("Number of people "+ username+ " is following: (in progress)");
-        System.out.println("Playliats: (in progress) ");
+        System.out.println("Number of people "+ username+ " is following: " + String.valueOf(followeeCount));
+        System.out.println("Playlists: (in progress) ");
         System.out.println("Top 5 Recommended songs: (in progress)");
         System.out.println("DONE displaying " + username + "'s info");
         System.out.println("Enter 'help' for more commands!");
@@ -176,7 +180,7 @@ public class UserSql {
     }
 
     /**
-     * Incorporate this into view_profile
+     * works
      * */
     public static int getFollowerCount(String username) throws SQLException {
         String uuid = getUUID(username);
@@ -191,6 +195,30 @@ public class UserSql {
             return rs.getInt(1);
         }
         return -1;
+    }
+
+
+    /**
+     * TODO: CHECK IF WORKS
+     * */
+
+    public static int getFolloweeCount(String username){
+        int followeeCount = -1;
+        try {
+            String uuid = getUUID(username); //
+            PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT COUNT(" +
+                    FOLLOWEE_ID + ") FROM " + FOLLOWS_TABLE + " WHERE " +
+                    FOLLOWER_ID + " =?;");
+
+            ps.setString(1, uuid);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()){
+                followeeCount = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println("error getting followee count");
+        }
+        return followeeCount;
     }
 
 
