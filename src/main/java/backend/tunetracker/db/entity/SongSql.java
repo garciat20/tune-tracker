@@ -59,6 +59,22 @@ public class SongSql {
         }
     }
 
+    public static void randomSongGenerator(){
+        try {
+            PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT " + SONG_NAME +
+                    " FROM  " + SONGS_TABLE +
+                    "\n ORDER BY RAND()" +
+                    "\n LIMIT 3;");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                System.out.println(rs.getString("song_name"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error generating random songs");
+        }
+        System.out.println("5 Random Songs to choose from");
+    }
+
 
     /**
      * FUTURE IMPLEMENTION TO FILTER

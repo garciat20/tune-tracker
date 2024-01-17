@@ -40,6 +40,8 @@ public class Commands {
         command_reference.put("view_profile", 5);
         command_reference.put("follow_user", 6);
         command_reference.put("create_playlist", 7);
+        command_reference.put("view_playlist", 8);
+        command_reference.put("add_song_to_playlist", 9);
 
         this.loggedIn = null; // initialize commands in Main, so by default no one is logged in.
     }
@@ -56,6 +58,8 @@ public class Commands {
             case 5 -> viewProfile();
             case 6 -> followUser();
             case 7 -> createPlaylist();
+            case 8 -> viewPlaylist();
+            case 9 -> addSongToPlaylist();
             default -> System.out.println("Invalid command, enter 'help' for assistance");
         }
     }
@@ -210,27 +214,32 @@ public class Commands {
     }
 
     /**
-     * TODO: Create method to generate 5 random songs
+     * TODO: Create method to generate 5 random songs -- I THINK DONE
      * TODO: Create method to get songId from the song
-     *
+     * TODO: CHECK IF WORKS, FINISH MOCK USER FOR LOADING PLAYLISTS WITH MUSIC
      * */
     public void addSongToPlaylist(){
         // self-explanatory
         System.out.println("Which playlist would you like to add a song to? (your playlists are below): ");
 
         //method: generate a user's playlist, and get playlistId from playlist name
+        PlaylistSql.getPlaylistNames(this.loggedIn.getUuid().toString());
+
+        System.out.println("Enter the playlist name you wish to add songs to (BE EXACT): ");
+        String playlistName = this.scanner.nextLine().trim();
+        int playlistId = PlaylistSql.getPlaylistId(playlistName, this.loggedIn.getUuid().toString());
 
         System.out.println("What song would you like to add to your playlist? (5 random songs are below)");
 
         // method: generate 5 random songs
+        SongSql.randomSongGenerator();
 
         // method: get songId from the song requested
 
         // method: get the pla
         int songId;
-        int playlistId;
 
-        PlaylistSql.addSongToPlaylist(playlistId, songId);
+//        PlaylistSql.addSongToPlaylist(playlistId, songId);
     }
 
     public void viewSongs(){
