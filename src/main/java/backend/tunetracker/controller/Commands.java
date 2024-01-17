@@ -2,6 +2,7 @@ package backend.tunetracker.controller;
 
 import backend.tunetracker.Main;
 import backend.tunetracker.db.entity.PlaylistSql;
+import backend.tunetracker.db.entity.SongSql;
 import backend.tunetracker.db.entity.UserSql;
 import backend.tunetracker.model.User;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -118,7 +119,7 @@ public class Commands {
     }
 
     /**
-     * TODO: UTILIZE LOGGED IN USER'S UUID TO VIEW PLAYLIST ETC
+     * TODO: FINISH VIEWPROFILE
      * */
     public void viewProfile() throws SQLException {
         if (this.loggedIn == null){
@@ -157,7 +158,7 @@ public class Commands {
 
     /**
      * TODO: TEST IF WORKS!
-     *
+     * works
      * */
     public void createPlaylist(){
         // SCANNER TAKE INPUT FOR NAME OF PLAYLIST
@@ -180,15 +181,25 @@ public class Commands {
      */
     public void viewPlaylist(){
         // show songs from playlist and name of playlist
+        System.out.println("! NOTE: CAN ONLY VIEW YOUR OWN PLAYLIST AT THE MOMENT !");
         System.out.println("Below are the following playlists that you have:");
 
-        PlaylistSql.getPlaylists(this.loggedIn.getUuid().toString());
+        PlaylistSql.getPlaylistNames(this.loggedIn.getUuid().toString());
         System.out.print("Enter the playlist name you wish to view: ");
         // print out playlist(s) for a user based on user UUID
         String playlistName = this.scanner.nextLine().trim();
-        PlaylistSql.getPlaylistSongs(playlistName, this.loggedIn.getUuid().toString());
 
-    }
+//        System.out.println("Do you wish to view your playlist? Enter 'yes' or 'no'");
+//        String yesOrNo = this.scanner.nextLine().trim();
+//        if (yesOrNo.matches("yes")){
+            // below prints out the output
+
+        // BELOW ONLY PRINTS OUT PLAYLIST SONGS FOR LOGGED IN USER
+        int playlistId = PlaylistSql.getPlaylistId(playlistName,this.loggedIn.getUuid().toString());
+        SongSql.viewSongsFromPlaylist(playlistId, this.loggedIn.getUuid().toString());
+
+        }
+
 
     public void renamePlaylist(){
         // self-explanatory
@@ -198,8 +209,28 @@ public class Commands {
         // self-explanatory
     }
 
+    /**
+     * TODO: Create method to generate 5 random songs
+     * TODO: Create method to get songId from the song
+     *
+     * */
     public void addSongToPlaylist(){
         // self-explanatory
+        System.out.println("Which playlist would you like to add a song to? (your playlists are below): ");
+
+        //method: generate a user's playlist, and get playlistId from playlist name
+
+        System.out.println("What song would you like to add to your playlist? (5 random songs are below)");
+
+        // method: generate 5 random songs
+
+        // method: get songId from the song requested
+
+        // method: get the pla
+        int songId;
+        int playlistId;
+
+        PlaylistSql.addSongToPlaylist(playlistId, songId);
     }
 
     public void viewSongs(){

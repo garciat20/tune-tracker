@@ -14,6 +14,7 @@ public class PlaylistSql {
 
     // columns
     private static final String PLAYLIST_ID = "id";
+    private static final String SONGS_IN_PLAYLIST_PLAYLIST_ID = "playlist_id";
     private static final String PLAYLIST_NAME = "playlist_name";
     private static final String USER_ID = "user_id";
     private static final String SONG_ID = "song_id";
@@ -41,7 +42,7 @@ public class PlaylistSql {
     /**
      * TODO: METHODS FOR --> getting a playlist id from a a playlist name
      * */
-    public static void getPlaylistSongs(String playlistName, String userUuid){
+    public static void getPlaylistsViaUuidAndPlaylistName(String playlistName, String userUuid){
         try {
             PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT" +
                     PLAYLIST_NAME + " FROM " + PLAYLIST_TABLE + " WHERE " + USER_ID
@@ -63,6 +64,10 @@ public class PlaylistSql {
 
     }
 
+    /**
+     * TODO: CHECK IF WORKS
+     * */
+
     public static int getPlaylistId(String playlistName, String userUuid){
         int playlistId = -1;
         try {
@@ -82,7 +87,7 @@ public class PlaylistSql {
         return  playlistId;
     }
 
-    public static void getPlaylists(String userUuid){
+    public static void getPlaylistNames(String userUuid){
         try {
             PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT " + PLAYLIST_NAME +
                     " FROM " + PLAYLIST_TABLE + " WHERE " + USER_ID + " =?;");
@@ -105,6 +110,18 @@ public class PlaylistSql {
      * Make method to add a song to a playlist
      * */
     public static void addSongToPlaylist(int playlistId, int songId){
+        try {
+            PreparedStatement ps = Main.sql.getCon().prepareStatement("INSERT INTO " +
+                    SONGS_IN_PLAYLIST_TABLE + "(" +
+                    SONGS_IN_PLAYLIST_PLAYLIST_ID + ", " + SONG_ID + ") " +
+                    "VALUES (?, ?);");
+            ps.setInt(1, playlistId);
+            ps.setInt(2, songId);
+            ps.executeUpdate();
+        }catch (SQLException e){
+            System.out.println("Error adding songs to playlist");
+
+        }
 
     }
 

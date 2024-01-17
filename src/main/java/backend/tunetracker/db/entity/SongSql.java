@@ -2,10 +2,8 @@ package backend.tunetracker.db.entity;
 
 import backend.tunetracker.Main;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Time;
+import java.sql.*;
+
 public class SongSql {
     //tables
     private static final String SONGS_TABLE = "songs";
@@ -17,6 +15,7 @@ public class SongSql {
     /**
      * TODO: FINISH COLUMN FINAL VARIABLES
      * */
+    private static final String PLAYLIST_USER_ID = "user_id";
     private static final String GENERAL_ID = "id";
     private static final String SONG_IN_PLAYLIST_TABLE_SONG_ID = "song_id";
     private static final String SONG_NAME = "song_name";
@@ -25,9 +24,11 @@ public class SongSql {
     private static final String DURATION = "duration";
     private static final String PLAYLIST_NAME = "playlist_name";
 
-    public static void insertIntoTable(String songName, Date releaseYear, Time duration){
+    public static void insertIntoSongTable(String songName, Date releaseYear, Time duration){
         // SQL STATEMENT TO INSERT
     }
+
+
     /**
      * Make method to view songs from song table
      * prompt if they'd like to search via filter but that's a FUTURE IMPLEMENTATION
@@ -41,7 +42,17 @@ public class SongSql {
                     "\n INNER JOIN " + SONGS_IN_PLAYLIST_TABLE + " ON " + SONGS_TABLE + "." + SONG_IN_PLAYLIST_TABLE_SONG_ID + " = "+
                     SONGS_IN_PLAYLIST_TABLE + "." + SONG_IN_PLAYLIST_TABLE_SONG_ID  +
                     "\n INNER JOIN " + PLAYLIST_TABLE + " ON " + SONGS_IN_PLAYLIST_TABLE + "." + PLAYLIST_ID + " = " +
-                    PLAYLIST_TABLE + "." + GENERAL_ID);
+                    PLAYLIST_TABLE + "." + GENERAL_ID +
+                    "\n WHERE " + PLAYLIST_TABLE + "." + PLAYLIST_USER_ID + " =? AND " +
+                    PLAYLIST_TABLE + "." + PLAYLIST_ID + " =?;");
+
+            ps.setString(1, userUuid);
+            ps.setInt(2, playlistId);
+            ResultSet rs = ps.executeQuery();
+            System.out.println("======= DEBUGGING: BELOW ARE SONG NAMES DEBUGGING ========");
+            while (rs.next()){
+                System.out.println(rs.getString("song_name"));
+            }
             // FINISH WHERE CLAUSE`
         } catch (SQLException e) {
             System.out.println("Error getting songs from a user's playlist");
