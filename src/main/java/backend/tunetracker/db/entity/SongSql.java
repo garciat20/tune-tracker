@@ -1,8 +1,11 @@
 package backend.tunetracker.db.entity;
 
 import backend.tunetracker.Main;
+import backend.tunetracker.model.Song;
 
 import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
 
 public class SongSql {
     //tables
@@ -59,7 +62,24 @@ public class SongSql {
         }
     }
 
-    public static void randomSongGenerator(){
+//    public static void randomSongGenerator(){
+//        try {
+//            PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT " + SONG_NAME +
+//                    " FROM  " + SONGS_TABLE +
+//                    "\n ORDER BY RAND()" +
+//                    "\n LIMIT 3;");
+//            ResultSet rs = ps.executeQuery();
+//            while (rs.next()){
+//                System.out.println(rs.getString("song_name"));
+//            }
+//        } catch (SQLException e) {
+//            System.out.println("Error generating random songs");
+//        }
+//        System.out.println("5 Random Songs to choose from");
+//    }
+
+    public static List<Song> randomSongGenerator(){
+        List<Song> songs = new LinkedList<>();
         try {
             PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT " + SONG_NAME +
                     " FROM  " + SONGS_TABLE +
@@ -67,14 +87,37 @@ public class SongSql {
                     "\n LIMIT 3;");
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
-                System.out.println(rs.getString("song_name"));
+                String songName = rs.getString("song_name");
+                Song song = new Song(songName);
+                songs.add(song);
+//                System.out.println(rs.getString("song_name"));
             }
         } catch (SQLException e) {
             System.out.println("Error generating random songs");
         }
-        System.out.println("5 Random Songs to choose from");
+        return songs;
+//        System.out.println("5 Random Songs to choose from");
     }
 
+    /**
+     * Very simple way of getting a songId as there aren't any duplicates in database
+     * */
+    public static int getSongId(String songName){
+        int songId = -1;
+        try {
+            PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT " +
+                    GENERAL_ID + " FROM " + SONGS_TABLE + " WHERE " + SONG_NAME +
+                    " =?;");
+            ps.setString(1, songName);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()){
+                songId = rs.getInt(GENERAL_ID);
+            }
+        }catch (SQLException e){
+            System.out.println("Error getting songId");
+        }
+        return  songId;
+    }
 
     /**
      * FUTURE IMPLEMENTION TO FILTER

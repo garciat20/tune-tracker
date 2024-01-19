@@ -120,7 +120,6 @@ public class PlaylistSql {
             ps.executeUpdate();
         }catch (SQLException e){
             System.out.println("Error adding songs to playlist");
-
         }
 
     }

@@ -13,7 +13,9 @@ import java.sql.SQLException;
  * Main class to run program
  * */
 public class Main {
-
+    private static final String YELLOW = "\u001B[33m";
+//    private static final String LIGHT_BLUE = "\u001B[38;5;117m";
+    private static final String RESET = "\u001B[0m";
     public static DbConnection sql;
 
 
@@ -25,11 +27,15 @@ public class Main {
         Commands commands = new Commands();
 
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter a command - if stuck enter 'help' for list of commands! \n" +
-                "(Suggestion) use a dummy user if you wish!\n" +
-                "username: dummy\n" +
-                "email: dummy@gmail.com \n"+
-                "password: password");
+        System.out.println(YELLOW+ """
+                ==============================================================
+                Enter a command - if stuck enter 'help' for list of commands! 
+                (SUGGESTION: USE A DUMMY USER)
+                username: dummy
+                email: dummy@gmail.com
+                password: password
+                ==============================================================
+                """ + RESET);
         while (sql.getCon()!=null){
             String input = scanner.nextLine().toLowerCase().trim();
             if (input.equals("q")) break;

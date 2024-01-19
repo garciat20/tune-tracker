@@ -1,10 +1,13 @@
 package backend.tunetracker.seeddata;
 
 import backend.tunetracker.Main;
+import backend.tunetracker.db.entity.PlaylistSql;
+import backend.tunetracker.db.entity.SongSql;
 import backend.tunetracker.db.entity.UserSql;
 import backend.tunetracker.db.helpers.DateGenerator;
 import backend.tunetracker.db.helpers.EnglishOnly;
 import backend.tunetracker.db.helpers.MillisecondsConverter;
+import backend.tunetracker.model.Song;
 import backend.tunetracker.model.User;
 import com.github.javafaker.Faker;
 import com.opencsv.CSVReader;
@@ -220,9 +223,25 @@ public class Loader {
     public static void insertDummyUser() throws SQLException{
         LocalDate date = LocalDate.now();
         Date dateInsert = Date.valueOf(date);
-        User dummy = new User(UUID.randomUUID(), "dummy", "dummy@gmail.com", "first name",
+        UUID dummyUserUuid = UUID.randomUUID();
+        User dummy = new User(dummyUserUuid, "dummy", "dummy@gmail.com", "first name",
                 "last name", dateInsert, dateInsert);
         UserSql.insertUser(dummy, "password");
+
+        // loading fake playlist for dummy user
+
+        String dummyPlaylistName = "dummy playlist";
+        PlaylistSql.createUserPlaylist(dummyPlaylistName, dummyUserUuid.toString());
+        int playlistId =  PlaylistSql.getPlaylistId(dummyPlaylistName, dummyUserUuid.toString());
+
+        List<Song> songs = SongSql.randomSongGenerator();
+        for (int i = 0; i < songs.size(); i++){
+            String songName = songs.get(i).getSongName();
+            int songId = SongSql.getSongId(songName);
+
+            PlaylistSql.addSongToPlaylist(playlistId, songId);
+        }
+//        PlaylistSql.addSongToPlaylist();
     }
 
     public static void loadFollowers() throws SQLException {

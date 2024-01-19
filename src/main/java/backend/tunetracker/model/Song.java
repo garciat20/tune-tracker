@@ -6,22 +6,26 @@ import java.sql.Date;
  * Class represents a simple song
  * */
 public class Song {
-   private String song_name;
+   private String songName;
    private String[] artist;
-   private Date release_year;
+   private Date releaseYear;
 
-    public Song(String song_name, String[] artist, Date release_year){
-        this.song_name = song_name;
+    public Song(String songName, String[] artist, Date releaseYear){
+        this.songName = songName;
         this.artist = artist;
-        this.release_year = release_year;
+        this.releaseYear = releaseYear;
     }
 
-    public Date getRelease_year() {
-        return release_year;
+    public Song(String songname){
+        this.songName = songname;
     }
 
-    public String getSong_name() {
-        return song_name;
+    public Date getReleaseYear() {
+        return releaseYear;
+    }
+
+    public String getSongName() {
+        return songName;
     }
 
     public String[] getArtist() {

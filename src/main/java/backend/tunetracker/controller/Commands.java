@@ -4,6 +4,7 @@ import backend.tunetracker.Main;
 import backend.tunetracker.db.entity.PlaylistSql;
 import backend.tunetracker.db.entity.SongSql;
 import backend.tunetracker.db.entity.UserSql;
+import backend.tunetracker.model.Song;
 import backend.tunetracker.model.User;
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -14,10 +15,12 @@ import java.util.*;
 import java.sql.Date;
 
 public class Commands {
-    private final HashMap<String, Integer> command_reference = new HashMap<>(); // store possbile commands
+    private final String YELLOW = "\u001B[33m";
+    private final String RESET = "\u001B[0m";
+    private final HashMap<String, Integer> COMMAND_REFERENCE = new HashMap<>(); // store possbile commands
     private final Scanner scanner = new Scanner(System.in); // by default take in CLI commands
     private User loggedIn; // commands are only issued if logged in
-    private final String helpMessage = """
+    private final String helpMessage = YELLOW+"""
             ================================================================================
             Commands: 
             q: quit/ close application
@@ -26,28 +29,33 @@ public class Commands {
             view_profile: view information about a user (limited at the moment)
             follow_user: follower another user
             create_playlist: create a playlist
+            --below are new commands that need to be tested--
+            view_playlist: view your own playlist(s)
+            view_songs: view some random songs
+            add_song_to_playlist: add a song to your own playlist
             help: to view commands to utilize database
             ================================================================================
-            """;
+            """+RESET;
 
     public Commands() {
 
         // make commands underscore instead of space for simplicility sake
-        command_reference.put("help", 1);
-        command_reference.put("login", 2);
-        command_reference.put("logout", 3);
-        command_reference.put("create_user", 4);
-        command_reference.put("view_profile", 5);
-        command_reference.put("follow_user", 6);
-        command_reference.put("create_playlist", 7);
-        command_reference.put("view_playlist", 8);
-        command_reference.put("add_song_to_playlist", 9);
+        COMMAND_REFERENCE.put("help", 1);
+        COMMAND_REFERENCE.put("login", 2);
+        COMMAND_REFERENCE.put("logout", 3);
+        COMMAND_REFERENCE.put("create_user", 4);
+        COMMAND_REFERENCE.put("view_profile", 5);
+        COMMAND_REFERENCE.put("follow_user", 6);
+        COMMAND_REFERENCE.put("create_playlist", 7);
+        COMMAND_REFERENCE.put("view_playlist", 8);
+        COMMAND_REFERENCE.put("add_song_to_playlist", 9);
+        COMMAND_REFERENCE.put("view_songs", 10);
 
         this.loggedIn = null; // initialize commands in Main, so by default no one is logged in.
     }
 
     public void parseInput(String input) throws SQLException {
-        Integer commandNumber = command_reference.get(input);
+        Integer commandNumber = COMMAND_REFERENCE.get(input);
         commandNumber = (commandNumber != null) ? commandNumber : 0; // checking if 0, if so no valid command
 
         switch (commandNumber){
@@ -60,6 +68,7 @@ public class Commands {
             case 7 -> createPlaylist();
             case 8 -> viewPlaylist();
             case 9 -> addSongToPlaylist();
+            case 10 -> viewSongs();
             default -> System.out.println("Invalid command, enter 'help' for assistance");
         }
     }
@@ -204,7 +213,9 @@ public class Commands {
 
         }
 
-
+    /**
+     * TODO: THE TWO METHODS BELOW ARE EASY TO DO
+     * */
     public void renamePlaylist(){
         // self-explanatory
     }
@@ -212,6 +223,7 @@ public class Commands {
     public void deletePlaylist(){
         // self-explanatory
     }
+
 
     /**
      * TODO: Create method to generate 5 random songs -- I THINK DONE
@@ -223,6 +235,9 @@ public class Commands {
         System.out.println("Which playlist would you like to add a song to? (your playlists are below): ");
 
         //method: generate a user's playlist, and get playlistId from playlist name
+        /**
+         * make sure you preloaded data for a user to have a fake playlist
+         * */
         PlaylistSql.getPlaylistNames(this.loggedIn.getUuid().toString());
 
         System.out.println("Enter the playlist name you wish to add songs to (BE EXACT): ");
@@ -232,18 +247,34 @@ public class Commands {
         System.out.println("What song would you like to add to your playlist? (5 random songs are below)");
 
         // method: generate 5 random songs
-        SongSql.randomSongGenerator();
+//        List<Song> = new LinkedList<>();
+        // check how to create list and which one is perfereable based on performance
+
+        List<Song> songs = SongSql.randomSongGenerator();
+        for (int i = 0; i < songs.size(); i++){
+            System.out.println(songs.get(i).getSongName());
+        }
+        System.out.print("Which song would you like to pick from the songs above? (Enter the song name exactly): ");
 
         // method: get songId from the song requested
+        String songName = this.scanner.nextLine().trim();
+
 
         // method: get the pla
-        int songId;
+        int songId = SongSql.getSongId(songName);
 
-//        PlaylistSql.addSongToPlaylist(playlistId, songId);
+        PlaylistSql.addSongToPlaylist(playlistId,songId);
+        System.out.println("Added " + songName + " to " + playlistName + " successfully!");
     }
 
     public void viewSongs(){
         // not to show too much information just display 5 random songs (can have a while loop and break on command)
+        System.out.println("Here are some random songs: ");
+        List<Song> songs = SongSql.randomSongGenerator();
+        for (int i = 0; i < songs.size(); i++){
+            String songName = songs.get(i).getSongName();
+            System.out.println(songName);
+        }
     }
 
 
