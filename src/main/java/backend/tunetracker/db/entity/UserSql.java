@@ -1,6 +1,8 @@
 package backend.tunetracker.db.entity;
 
 import backend.tunetracker.Main;
+import backend.tunetracker.db.helpers.PrintStatement;
+import backend.tunetracker.model.Song;
 import backend.tunetracker.model.User;
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -73,13 +75,39 @@ public class UserSql {
     }
 
     public static void viewProfile(String username) throws SQLException {
+
         int followerCount = getFollowerCount(username);
         int followeeCount = getFolloweeCount(username);
         System.out.println("Number of followers: " + String.valueOf(followerCount));
         System.out.println("Number of people "+ username+ " is following: " + String.valueOf(followeeCount));
-        System.out.println("Playlists: (in progress) ");
-        System.out.println("Top 5 Recommended songs: (in progress)");
-        System.out.println("DONE displaying " + username + "'s info");
+
+        String userUuid = UserSql.getUUID(username);
+        List<String> playlistNames = PlaylistSql.getPlaylistNames(userUuid);
+
+        System.out.println(username + " playlist's are:" );
+        PrintStatement.printPlaylistHeaderFooter(playlistNames, username);
+//        String header = "================" + username + " playlists================";
+//
+//        int lengthOfHeader = 0;
+//        for (int i = 0; i < header.length() ; i++){
+//            lengthOfHeader ++;
+//        }
+//
+//        StringBuilder sb = new StringBuilder();
+//
+//        for (int i = 0; i < lengthOfHeader;i++){
+//            sb.append("=");
+//        }
+//
+//        System.out.println(header);
+//        for (int i = 0; i < playlistNames.size(); i++){
+//            System.out.println(playlistNames.get(i));
+//        }
+//        System.out.println(sb.toString());
+
+
+//        System.out.println("Top 5 Recommended songs: (in progress)");
+//        System.out.println("================DONE displaying " + username + "'s info================");
         System.out.println("Enter 'help' for more commands!");
     }
 

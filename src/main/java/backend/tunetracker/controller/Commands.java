@@ -4,6 +4,7 @@ import backend.tunetracker.Main;
 import backend.tunetracker.db.entity.PlaylistSql;
 import backend.tunetracker.db.entity.SongSql;
 import backend.tunetracker.db.entity.UserSql;
+import backend.tunetracker.db.helpers.PrintStatement;
 import backend.tunetracker.model.Song;
 import backend.tunetracker.model.User;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -17,6 +18,7 @@ import java.sql.Date;
 public class Commands {
     private final String YELLOW = "\u001B[33m";
     private final String RESET = "\u001B[0m";
+    private final String RED = "\u001B[31m";
     private final HashMap<String, Integer> COMMAND_REFERENCE = new HashMap<>(); // store possbile commands
     private final Scanner scanner = new Scanner(System.in); // by default take in CLI commands
     private User loggedIn; // commands are only issued if logged in
@@ -194,10 +196,14 @@ public class Commands {
      */
     public void viewPlaylist(){
         // show songs from playlist and name of playlist
-        System.out.println("! NOTE: CAN ONLY VIEW YOUR OWN PLAYLIST AT THE MOMENT !");
-        System.out.println("Below are the following playlists that you have:");
+        System.out.println(RED+"CAN ONLY VIEW YOUR OWN PLAYLIST AT THE MOMENT"+ RESET);
+        PrintStatement.printPlaylistHeaderFooter(PlaylistSql.getPlaylistNames(this.loggedIn.getUuid().toString()), this.loggedIn.getUsername());
+//        System.out.println("Below are the following playlists that you have:");
 
-        PlaylistSql.getPlaylistNames(this.loggedIn.getUuid().toString());
+//        List<String> playlistNames = PlaylistSql.getPlaylistNames(this.loggedIn.getUuid().toString());
+//        for (int i = 0; i < playlistNames.size(); i ++){
+//            System.out.println(playlistNames.get(i));
+//        }
         System.out.print("Enter the playlist name you wish to view: ");
         // print out playlist(s) for a user based on user UUID
         String playlistName = this.scanner.nextLine().trim();
@@ -224,6 +230,9 @@ public class Commands {
         // self-explanatory
     }
 
+    public void viewSongsFromPlaylist(){
+        System.out.println("What s");
+    }
 
     /**
      * TODO: Create method to generate 5 random songs -- I THINK DONE
@@ -238,7 +247,9 @@ public class Commands {
         /**
          * make sure you preloaded data for a user to have a fake playlist
          * */
-        PlaylistSql.getPlaylistNames(this.loggedIn.getUuid().toString());
+        List<String> playlistNames = PlaylistSql.getPlaylistNames(this.loggedIn.getUuid().toString());
+
+        playlistNames.forEach(System.out::println);
 
         System.out.println("Enter the playlist name you wish to add songs to (BE EXACT): ");
         String playlistName = this.scanner.nextLine().trim();

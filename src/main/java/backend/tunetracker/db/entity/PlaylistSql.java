@@ -5,6 +5,8 @@ import backend.tunetracker.Main;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
 public class PlaylistSql {
@@ -87,20 +89,23 @@ public class PlaylistSql {
         return  playlistId;
     }
 
-    public static void getPlaylistNames(String userUuid){
+    public static List<String> getPlaylistNames(String userUuid){
+        List<String> playlistNames = new LinkedList<>();
         try {
             PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT " + PLAYLIST_NAME +
                     " FROM " + PLAYLIST_TABLE + " WHERE " + USER_ID + " =?;");
-            ps.setString(1, userUuid);
 
+            ps.setString(1, userUuid);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()){
-                System.out.println( rs.getString("playlist_name"));
+                playlistNames.add(rs.getString((PLAYLIST_NAME)));
+//                System.out.println( rs.getString("playlist_name"));
             }
         }catch(SQLException e){
             System.out.println("Issue with getting playlist names for a specific user");
         }
+        return playlistNames;
 
     }
 
@@ -125,13 +130,23 @@ public class PlaylistSql {
     }
 
     /**
-     * Make method to view playlists from a user
-     *
+     * TODO: CHECK IF WORKS
      * */
-    public static void viewSongs(){
-
+    public static String getPlaylistName(int playlistId){
+        String playlistName = "";
+        try {
+            PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT " + PLAYLIST_NAME +
+                    " FROM " + PLAYLIST_TABLE +
+                    " WHERE " + PLAYLIST_TABLE + "." + PLAYLIST_ID + " =?;");
+            ps.setInt(1, playlistId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()){
+                playlistName = rs.getString(1);
+            }
+        }catch(SQLException e){
+            System.out.println("Error getting playlist name");
+        }
+        return playlistName;
     }
-
-
 
 }

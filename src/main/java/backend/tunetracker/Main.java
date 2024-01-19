@@ -14,7 +14,7 @@ import java.sql.SQLException;
  * */
 public class Main {
     private static final String YELLOW = "\u001B[33m";
-//    private static final String LIGHT_BLUE = "\u001B[38;5;117m";
+    private static final String CYAN = "\u001B[36m";
     private static final String RESET = "\u001B[0m";
     public static DbConnection sql;
 
@@ -27,13 +27,18 @@ public class Main {
         Commands commands = new Commands();
 
         Scanner scanner = new Scanner(System.in);
-        System.out.println(YELLOW+ """
+        System.out.print(YELLOW+ """
                 ==============================================================
                 Enter a command - if stuck enter 'help' for list of commands! 
+                """ + RESET + CYAN +
+                """
                 (SUGGESTION: USE A DUMMY USER)
                 username: dummy
                 email: dummy@gmail.com
                 password: password
+                """
+                + RESET + YELLOW +
+                """
                 ==============================================================
                 """ + RESET);
         while (sql.getCon()!=null){

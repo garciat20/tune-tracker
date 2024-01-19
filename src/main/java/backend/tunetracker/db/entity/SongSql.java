@@ -1,6 +1,7 @@
 package backend.tunetracker.db.entity;
 
 import backend.tunetracker.Main;
+import backend.tunetracker.db.helpers.PrintStatement;
 import backend.tunetracker.model.Song;
 
 import java.sql.*;
@@ -42,21 +43,27 @@ public class SongSql {
         try {
             PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT " + SONGS_TABLE +"."+ SONG_NAME +
                     " FROM " + SONGS_TABLE +
-                    "\n INNER JOIN " + SONGS_IN_PLAYLIST_TABLE + " ON " + SONGS_TABLE + "." + SONG_IN_PLAYLIST_TABLE_SONG_ID + " = "+
+                    "\n INNER JOIN " + SONGS_IN_PLAYLIST_TABLE + " ON " + SONGS_TABLE + "." + GENERAL_ID + " = "+
                     SONGS_IN_PLAYLIST_TABLE + "." + SONG_IN_PLAYLIST_TABLE_SONG_ID  +
                     "\n INNER JOIN " + PLAYLIST_TABLE + " ON " + SONGS_IN_PLAYLIST_TABLE + "." + PLAYLIST_ID + " = " +
                     PLAYLIST_TABLE + "." + GENERAL_ID +
                     "\n WHERE " + PLAYLIST_TABLE + "." + PLAYLIST_USER_ID + " =? AND " +
-                    PLAYLIST_TABLE + "." + PLAYLIST_ID + " =?;");
+                    PLAYLIST_TABLE + "." + GENERAL_ID + " =?;");
 
             ps.setString(1, userUuid);
             ps.setInt(2, playlistId);
             ResultSet rs = ps.executeQuery();
-            System.out.println("======= DEBUGGING: BELOW ARE SONG NAMES DEBUGGING ========");
+            List<String> songNames = new LinkedList<>();
             while (rs.next()){
-                System.out.println(rs.getString("song_name"));
+
+                songNames.add(rs.getString(SONG_NAME));
             }
             // FINISH WHERE CLAUSE`
+            /**
+             * TODO: CHECK IF PRINTING SONGS FROM PLAYLIST WORKS
+             * TODO: OKAY IT WORKS, ADD THAT YOU NEED TO ENTER HELP TO VIEW MORE COMMANDS AND  COLOR CODE IT MAYBE,  TESTED VIEW_PPLAYLIST, ADD MORE PRINT STATMENTS
+             * */
+            PrintStatement.printSongsFromPlaylist(PlaylistSql.getPlaylistName(playlistId),songNames);
         } catch (SQLException e) {
             System.out.println("Error getting songs from a user's playlist");
         }
@@ -84,7 +91,7 @@ public class SongSql {
             PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT " + SONG_NAME +
                     " FROM  " + SONGS_TABLE +
                     "\n ORDER BY RAND()" +
-                    "\n LIMIT 3;");
+                    "\n LIMIT 5;");
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
                 String songName = rs.getString("song_name");

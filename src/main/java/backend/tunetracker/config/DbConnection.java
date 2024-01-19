@@ -2,6 +2,8 @@ package backend.tunetracker.config;
 import java.sql.*;
 
 public class DbConnection {
+    private static final String YELLOW = "\u001B[33m";
+    private static final String RESET = "\u001B[0m";
     private final String url = "jdbc:mysql://localhost:3306/tunetracker";
     private final String username = "root";
     private final String password = "root";
@@ -46,7 +48,7 @@ public class DbConnection {
     public void disconnect() throws SQLException {
         if (this.con!=null && !this.con.isClosed()){
             this.con.close();
-            System.out.println("Disconnected from database, remember to close MySQL server running :)");
+            System.out.println(YELLOW + "Disconnected from database, remember to close MySQL server running :)" + RESET);
         }
     }
 }
