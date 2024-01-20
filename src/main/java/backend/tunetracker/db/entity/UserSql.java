@@ -210,12 +210,15 @@ public class UserSql {
     /**
      * TOOD: FINISH METHOD
      * */
-    public static List<String> getFollowingPeople(){
+    public static List<String> getFollowees(){
+        List<String> followees = new ArrayList<>();
         try {
             PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT ");
         } catch (SQLException e) {
             System.out.println("Error getting people someone follows");
         }
+        return followees;
+
     }
 
     /**
