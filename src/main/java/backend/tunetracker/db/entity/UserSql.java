@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.UUID;
 
 public class UserSql {
+    private static final String BLUE  = "\u001B[34m";
+    private static final String RESET = "\u001B[0m";
     // Table(s)
     private static final String USER_TABLE = "user";
     private static final String FOLLOWS_TABLE = "follows";
@@ -55,7 +57,9 @@ public class UserSql {
     /**
      * TODO: Test if works
      * */
-    public static void viewFollowers(String username)throws SQLException{
+    public static List<String> getFollowers(String username)throws SQLException{
+        List<String> followers = new ArrayList<>();
+
         PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT "+ FOLLOWER_ID + " FROM "
         + FOLLOWS_TABLE +" WHERE followee_id =?;");
 
@@ -64,18 +68,19 @@ public class UserSql {
         ps.setString(1, uuidFromUsername); // set it from uuid
         ResultSet rs = ps.executeQuery(); // results from sql table
 
-        System.out.println("Followers of " + username + ": "); // traverse thru sql
+//        System.out.println("Followers of " + username + ": "); // traverse thru sql
         // finish below
         while (rs.next()){
             String uuidColumn = rs.getString(FOLLOWER_ID);
             String follower = getUsername(uuidColumn);
             System.out.println(follower);
         }
+        return followers;
 
     }
 
     public static void viewProfile(String username) throws SQLException {
-
+        System.out.println(BLUE + "Displaying " + username + "'s profile" + RESET);
         int followerCount = getFollowerCount(username);
         int followeeCount = getFolloweeCount(username);
         System.out.println("Number of followers: " + String.valueOf(followerCount));
@@ -84,31 +89,12 @@ public class UserSql {
         String userUuid = UserSql.getUUID(username);
         List<String> playlistNames = PlaylistSql.getPlaylistNames(userUuid);
 
-        System.out.println(username + " playlist's are:" );
+//        System.out.println(username + " playlist's are:" );
         PrintStatement.printPlaylistHeaderFooter(playlistNames, username);
-//        String header = "================" + username + " playlists================";
-//
-//        int lengthOfHeader = 0;
-//        for (int i = 0; i < header.length() ; i++){
-//            lengthOfHeader ++;
-//        }
-//
-//        StringBuilder sb = new StringBuilder();
-//
-//        for (int i = 0; i < lengthOfHeader;i++){
-//            sb.append("=");
-//        }
-//
-//        System.out.println(header);
-//        for (int i = 0; i < playlistNames.size(); i++){
-//            System.out.println(playlistNames.get(i));
-//        }
-//        System.out.println(sb.toString());
-
 
 //        System.out.println("Top 5 Recommended songs: (in progress)");
-//        System.out.println("================DONE displaying " + username + "'s info================");
-        System.out.println("Enter 'help' for more commands!");
+
+
     }
 
     public static String getUUID(String username) throws SQLException {
@@ -203,7 +189,32 @@ public class UserSql {
             ps.setString(2, followeeStringId);
             ps.execute();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println("Problem following person");
+        }
+    }
+
+    public static void unfollowPerson(UUID followerID, UUID followeeID){
+        // make follower unfollow followee
+        try {
+            PreparedStatement ps = Main.sql.getCon().prepareStatement("DELETE FROM " +
+                    FOLLOWS_TABLE + " WHERE " + FOLLOWER_ID + " =? AND " + FOLLOWEE_ID + " =?;");
+
+            ps.setString(1, followerID.toString());
+            ps.setString(2, followeeID.toString());
+            ps.execute();
+        }catch (SQLException e){
+            System.out.println("Issue when unfollowing someone");
+        }
+    }
+
+    /**
+     * TOOD: FINISH METHOD
+     * */
+    public static List<String> getFollowingPeople(){
+        try {
+            PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT ");
+        } catch (SQLException e) {
+            System.out.println("Error getting people someone follows");
         }
     }
 

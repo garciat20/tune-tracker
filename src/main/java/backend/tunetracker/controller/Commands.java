@@ -22,16 +22,19 @@ public class Commands {
     private final HashMap<String, Integer> COMMAND_REFERENCE = new HashMap<>(); // store possbile commands
     private final Scanner scanner = new Scanner(System.in); // by default take in CLI commands
     private User loggedIn; // commands are only issued if logged in
+
+    // FOR HELP MESSAGE ADD: "VIEW PEOPLE FOLLOWING" AND "UNFOLLOW"
     private final String helpMessage = YELLOW+"""
             ================================================================================
             Commands: 
             q: quit/ close application
             login: enter credentials to log into account
+            logout: to log out of current account
             create_user: to create a new account to login and use application functionality
-            view_profile: view information about a user (limited at the moment)
+            view_profile: view information about a user 
             follow_user: follower another user
+            view_followers: check out your followers
             create_playlist: create a playlist
-            --below are new commands that need to be tested--
             view_playlist: view your own playlist(s)
             view_songs: view some random songs
             add_song_to_playlist: add a song to your own playlist
@@ -52,6 +55,8 @@ public class Commands {
         COMMAND_REFERENCE.put("view_playlist", 8);
         COMMAND_REFERENCE.put("add_song_to_playlist", 9);
         COMMAND_REFERENCE.put("view_songs", 10);
+//        COMMAND_REFERENCE.put("unfollow_user", 11);
+        COMMAND_REFERENCE.put("view_followers", 12);
 
         this.loggedIn = null; // initialize commands in Main, so by default no one is logged in.
     }
@@ -71,12 +76,14 @@ public class Commands {
             case 8 -> viewPlaylist();
             case 9 -> addSongToPlaylist();
             case 10 -> viewSongs();
+//            case 11 -> unfollowUser();
+            case 12 -> viewFollowers();
             default -> System.out.println("Invalid command, enter 'help' for assistance");
         }
     }
 
     public void logout(){
-        // update last access time
+        checkIfLoggedIn();
         this.loggedIn = null;
         System.out.println("You have logged out. Enter 'help' for more commands");
     }
@@ -103,7 +110,7 @@ public class Commands {
         User newUser = new User(UUID.randomUUID(),username,email,first,last,creationDate, creationDate);
         try {
             UserSql.insertUser(newUser, password);
-            System.out.println("User created! Enter 'login' to use new account! Or enter 'help' for more assistance");
+            System.out.println("User created! Enter 'login' to use new account! Or enter 'help' for more commands");
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Error when creating new user :(");
@@ -123,7 +130,7 @@ public class Commands {
             this.loggedIn = UserSql.selectByEmailPassword(email,password);
             if (this.loggedIn != null){
                 UserSql.updateLastAccessTime(this.loggedIn.getUuid()); // update the last time logged in for user
-                System.out.println("Welcome back " + this.loggedIn.getUsername() + "! Enter 'help' for commands :)");
+                System.out.println("Welcome back " + this.loggedIn.getUsername() + "! Enter 'help' for commands");
                 return;
             }
         } catch (SQLException e) {
@@ -137,14 +144,12 @@ public class Commands {
      * TODO: FINISH VIEWPROFILE
      * */
     public void viewProfile() throws SQLException {
-        if (this.loggedIn == null){
-            System.out.println("You must be logged in");
-            return;
-        }
+        checkIfLoggedIn();
         System.out.print("Enter the username of who you want to search: ");
         String username = this.scanner.nextLine().trim();
-        System.out.println("DIPLAYING " + username + "'s info:");
+
         UserSql.viewProfile(username);
+        System.out.println("Enter 'help' for more commands!");
     }
 
     /**
@@ -153,10 +158,7 @@ public class Commands {
      * With ID's use UserSQL class to enable the action
      * */
     public void followUser(){
-        if (this.loggedIn == null){
-            System.out.println("You must be logged in");
-            return;
-        }
+        checkIfLoggedIn();
         System.out.print("Enter username you wish to follow: ");
         String username = this.scanner.nextLine().trim();
         try {
@@ -165,9 +167,46 @@ public class Commands {
         } catch (SQLException e) {
             System.out.println("cannot get UUID of user");
         }
-        System.out.println("Sucessfully followed!");
+        System.out.println("Sucessfully followed! Enter help for more commands!");
 
 
+    }
+
+    public void viewFollowers(){
+        System.out.println("=============People you're following=============");
+        try {
+            List<String> followers = UserSql.getFollowers(this.loggedIn.getUsername());
+
+            for (int i =0; i < followers.size(); i++ ){
+                System.out.println(followers.get(i));
+            }
+        } catch (SQLException e) {
+            System.out.println("error with viewing followers");
+        }
+        System.out.println("Enter 'help' for more commands!");
+    }
+
+
+    /**
+     * TODO: MAKE SURE IT WORKS AFTER YOU FINISH NEW METHOD IN USERSQL!!!!
+     * */
+    public void unfollowUser(){
+        checkIfLoggedIn();
+
+
+        System.out.print("Who do you wish to unfollow? ");
+        String followee = this.scanner.nextLine().trim();
+
+        UUID uuidOfFollowee;
+        try {
+            uuidOfFollowee = UUID.fromString(UserSql.getUUID(followee));
+            System.out.println("DEBUG::: THIS SHOULD BE GONE CHECK DATAGRIP: " + uuidOfFollowee);
+            UserSql.unfollowPerson(this.loggedIn.getUuid(), uuidOfFollowee);
+        } catch (SQLException e) {
+            System.out.println("Issue getting uuid of followee");
+            return;
+        }
+        System.out.println("You unfollowed " + followee + "! Enter 'help' for more commands");
     }
 
 
@@ -176,6 +215,7 @@ public class Commands {
      * works
      * */
     public void createPlaylist(){
+        checkIfLoggedIn();
         // SCANNER TAKE INPUT FOR NAME OF PLAYLIST
         // CALL METHOD FROM USERSQL.JAVA
         if (this.loggedIn == null){
@@ -186,7 +226,7 @@ public class Commands {
         String playlistName = this.scanner.nextLine().trim();
         String uuidString = this.loggedIn.getUuid().toString();
         PlaylistSql.createUserPlaylist(playlistName, uuidString);
-        System.out.println("Playlist created!");
+        System.out.println("Playlist created! Enter 'help' for more commands!");
 
     }
 
@@ -195,15 +235,30 @@ public class Commands {
      * TODO: TEST IF WORKS
      */
     public void viewPlaylist(){
+        checkIfLoggedIn();
         // show songs from playlist and name of playlist
+
         System.out.println(RED+"CAN ONLY VIEW YOUR OWN PLAYLIST AT THE MOMENT"+ RESET);
         PrintStatement.printPlaylistHeaderFooter(PlaylistSql.getPlaylistNames(this.loggedIn.getUuid().toString()), this.loggedIn.getUsername());
 //        System.out.println("Below are the following playlists that you have:");
+        List<String> playlistNames = PlaylistSql.getPlaylistNames(this.loggedIn.getUuid().toString());
 
+        // nothing else to do since playlist size is 0
+        if (playlistNames.size() == 0){
+            return;
+        }
 //        List<String> playlistNames = PlaylistSql.getPlaylistNames(this.loggedIn.getUuid().toString());
 //        for (int i = 0; i < playlistNames.size(); i ++){
 //            System.out.println(playlistNames.get(i));
 //        }
+        System.out.println("Would you like to see the songs from your playlist? (Enter " +
+                "'y' or 'n'");
+        String answer = this.scanner.nextLine().trim();
+
+        if (!(answer.matches("y"))){
+            System.out.println("Enter 'help' for more commands!");
+            return;
+        }
         System.out.print("Enter the playlist name you wish to view: ");
         // print out playlist(s) for a user based on user UUID
         String playlistName = this.scanner.nextLine().trim();
@@ -216,7 +271,7 @@ public class Commands {
         // BELOW ONLY PRINTS OUT PLAYLIST SONGS FOR LOGGED IN USER
         int playlistId = PlaylistSql.getPlaylistId(playlistName,this.loggedIn.getUuid().toString());
         SongSql.viewSongsFromPlaylist(playlistId, this.loggedIn.getUuid().toString());
-
+        System.out.println("Enter 'help' for more commands!");
         }
 
     /**
@@ -231,7 +286,7 @@ public class Commands {
     }
 
     public void viewSongsFromPlaylist(){
-        System.out.println("What s");
+        System.out.println("What songs ");
     }
 
     /**
@@ -240,16 +295,23 @@ public class Commands {
      * TODO: CHECK IF WORKS, FINISH MOCK USER FOR LOADING PLAYLISTS WITH MUSIC
      * */
     public void addSongToPlaylist(){
-        // self-explanatory
-        System.out.println("Which playlist would you like to add a song to? (your playlists are below): ");
-
-        //method: generate a user's playlist, and get playlistId from playlist name
+        checkIfLoggedIn();
         /**
          * make sure you preloaded data for a user to have a fake playlist
          * */
         List<String> playlistNames = PlaylistSql.getPlaylistNames(this.loggedIn.getUuid().toString());
 
-        playlistNames.forEach(System.out::println);
+        if (playlistNames.size()==0){
+            System.out.println("No playlists were found, create one (create_playlist)! Enter 'help' for more commands");
+            return;
+        }
+//        System.out.println("Which playlist would you like to add a song to? (your playlists are below): ");
+
+        //method: generate a user's playlist, and get playlistId from playlist name
+
+//        playlistNames.forEach(System.out::println);
+
+        PrintStatement.printPlaylistHeaderFooter(playlistNames, loggedIn.getUsername());
 
         System.out.println("Enter the playlist name you wish to add songs to (BE EXACT): ");
         String playlistName = this.scanner.nextLine().trim();
@@ -275,7 +337,7 @@ public class Commands {
         int songId = SongSql.getSongId(songName);
 
         PlaylistSql.addSongToPlaylist(playlistId,songId);
-        System.out.println("Added " + songName + " to " + playlistName + " successfully!");
+        System.out.println("Check out the added song in your playlist! Enter 'help' for more commands");
     }
 
     public void viewSongs(){
@@ -286,8 +348,15 @@ public class Commands {
             String songName = songs.get(i).getSongName();
             System.out.println(songName);
         }
+        System.out.println("Enter 'help' for more commands!");
     }
 
+    public void checkIfLoggedIn(){
+        if (this.loggedIn == null){
+            System.out.println("You must be logged in");
+            return;
+        }
+    }
 
 
 //    public void getUsernames(){
