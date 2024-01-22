@@ -7,8 +7,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
 
+
+/**
+ * Class to interact with database concerning Playlists
+ *
+ * @author Thomas Garcia
+ * */
 public class PlaylistSql {
     // tables
     private static final String PLAYLIST_TABLE = "playlist";
@@ -42,34 +47,8 @@ public class PlaylistSql {
     }
 
     /**
-     * TODO: METHODS FOR --> getting a playlist id from a a playlist name
+     * Gets playlist id
      * */
-    public static void getPlaylistsViaUuidAndPlaylistName(String playlistName, String userUuid){
-        try {
-            PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT" +
-                    PLAYLIST_NAME + " FROM " + PLAYLIST_TABLE + " WHERE " + USER_ID
-            + " =? AND " + PLAYLIST_NAME +" =?;");
-
-            ps.setString(1, userUuid);
-            ps.setString(2, playlistName);
-
-            ResultSet rs = ps.executeQuery();
-            // print playlists for user
-            while (rs.next()){
-                System.out.println(rs.getString("playlist_name"));
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Playlist name error");
-        }
-
-
-    }
-
-    /**
-     * TODO: CHECK IF WORKS
-     * */
-
     public static int getPlaylistId(String playlistName, String userUuid){
         int playlistId = -1;
         try {
@@ -89,6 +68,9 @@ public class PlaylistSql {
         return  playlistId;
     }
 
+    /**
+     * Gets list of playlist names of a user
+     * */
     public static List<String> getPlaylistNames(String userUuid){
         List<String> playlistNames = new LinkedList<>();
         try {
@@ -149,5 +131,29 @@ public class PlaylistSql {
         }
         return playlistName;
     }
+    //    /**
+//     * maybe not useful
+//     * */
+//    public static void getPlaylistsViaUuidAndPlaylistName(String playlistName, String userUuid){
+//        try {
+//            PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT" +
+//                    PLAYLIST_NAME + " FROM " + PLAYLIST_TABLE + " WHERE " + USER_ID
+//            + " =? AND " + PLAYLIST_NAME +" =?;");
+//
+//            ps.setString(1, userUuid);
+//            ps.setString(2, playlistName);
+//
+//            ResultSet rs = ps.executeQuery();
+//            // print playlists for user
+//            while (rs.next()){
+//                System.out.println(rs.getString("playlist_name"));
+//            }
+//
+//        } catch (SQLException e) {
+//            System.out.println("Playlist name error");
+//        }
+//
+
+//    }
 
 }

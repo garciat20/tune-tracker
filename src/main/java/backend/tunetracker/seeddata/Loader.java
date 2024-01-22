@@ -23,6 +23,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Class that preloads data into database
+ *
+ * @author Thomas Garcia
+ * */
+
 public class Loader {
     /**
      * TODO: Create playlist for a dummyUser2 as mockdata
@@ -31,19 +37,9 @@ public class Loader {
     private static HashSet<String> artistNames = new HashSet<>();
     private static HashSet<String> uniqueUsernames = new HashSet<>();
 
-    public static void databaseMaker(){
-        try {
-            Statement statement = Main.sql.getCon().createStatement();
-            String databaseQuery = "CREATE DATABASE IF NOT EXISTS tunetracker;";
-            statement.executeUpdate(databaseQuery);
-
-            String useDatabase = "USE tunetracker";
-            statement.executeUpdate(useDatabase);
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    /**
+     * Creates tables for schema
+     * */
     public static void buildTables(){
         try {
             String userTable = "CREATE TABLE IF NOT EXISTS user(" +
@@ -191,7 +187,7 @@ public class Loader {
 
 
     /**
-     * TODO: MAKE SURE THERE ISNT ANY DUPLICATE USERS! --- DONE  I THINK
+     * Loads users while making sure there's no duplicates
      * */
     public static void loadUsers() throws SQLException {
         Faker faker = new Faker();
@@ -220,6 +216,9 @@ public class Loader {
         }
     }
 
+    /**
+     * Creates a fake user that is the main character (has lots of data)
+     * */
     public static void insertDummyUser() throws SQLException{
         LocalDate date = LocalDate.now();
         Date dateInsert = Date.valueOf(date);
@@ -241,9 +240,11 @@ public class Loader {
 
             PlaylistSql.addSongToPlaylist(playlistId, songId);
         }
-//        PlaylistSql.addSongToPlaylist();
     }
 
+    /**
+     * Makes fake users have followers
+     * */
     public static void loadFollowers() throws SQLException {
         List<UUID> uuids = UserSql.getAllUuid();
         int counter = 0;
@@ -254,6 +255,7 @@ public class Loader {
             counter ++;
             UUID uuid2 = uuids.get(counter); // get the second user
             UserSql.followPerson(uuid1,uuid2);
+            UserSql.followPerson(uuid2, uuid1); // isue maybe
 //            UserSql.followPerson(UUID.fromString(dummyUuid), uuid1); // dummy following
             UserSql.followPerson(uuid2, UUID.fromString(dummyUuid)); // dummy followers
             counter ++;
@@ -264,14 +266,8 @@ public class Loader {
 
 
     public static void dropDatabase() throws SQLException {
-
         PreparedStatement ps = Main.sql.getCon().prepareStatement("DROP SCHEMA IF EXISTS tunetracker;");
         ps.executeUpdate();
-//        statement.executeUpdate("DROP TABLE IF EXISTS artist_songs");
-//        statement.executeUpdate("DROP TABLE IF EXISTS artist");
-//        statement.executeUpdate("DROP TABLE IF EXISTS songs");
-//        statement.executeUpdate("DROP TABLE IF EXISTS follows");
-//        statement.executeUpdate("DROP TABLE IF EXISTS user");
     }
 
     public static void createDatabase() throws SQLException {
@@ -284,7 +280,6 @@ public class Loader {
 
     public static void loadDatabase() throws CsvValidationException, IOException, SQLException {
         System.out.println("loading database...");
-//        databaseMaker(); //make sure we have database
         dropDatabase();
         createDatabase();
         buildTables(); // make sure tablesa rebuilt

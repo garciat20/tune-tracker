@@ -3,6 +3,11 @@ package backend.tunetracker.model;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Class that represents a simple Artist
+ *
+ * @author Thomas Garcia
+ * */
 public class Artist {
     private LinkedList<String> songs = new LinkedList();
     private String artist;

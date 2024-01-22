@@ -3,6 +3,9 @@ package backend.tunetracker.db.helpers;
 import java.sql.Time;
 import java.time.LocalTime;
 
+/**
+ * Helper that converts milliseconds to a 00:00:00 format in Time form
+ * */
 public class MillisecondsConverter {
     public static Time duration(String milliseconds){
         int durationConverted = Integer.parseInt(milliseconds);

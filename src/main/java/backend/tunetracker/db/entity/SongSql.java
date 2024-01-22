@@ -8,6 +8,12 @@ import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Class to interact with database concerning Songs
+ *
+ * @author Thomas Garcia
+ * */
+
 public class SongSql {
     //tables
     private static final String SONGS_TABLE = "songs";
@@ -68,22 +74,6 @@ public class SongSql {
             System.out.println("Error getting songs from a user's playlist");
         }
     }
-
-//    public static void randomSongGenerator(){
-//        try {
-//            PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT " + SONG_NAME +
-//                    " FROM  " + SONGS_TABLE +
-//                    "\n ORDER BY RAND()" +
-//                    "\n LIMIT 3;");
-//            ResultSet rs = ps.executeQuery();
-//            while (rs.next()){
-//                System.out.println(rs.getString("song_name"));
-//            }
-//        } catch (SQLException e) {
-//            System.out.println("Error generating random songs");
-//        }
-//        System.out.println("5 Random Songs to choose from");
-//    }
 
     public static List<Song> randomSongGenerator(){
         List<Song> songs = new LinkedList<>();

@@ -4,7 +4,7 @@ A prefilled database with songs and fake users. Interacting with CLI can allow u
 Future implementations are at the bottom.
 ## Description
 
-Tunetracker allows users to sign up/ login to access core features of the application such as following/ unfollowing other users (unfollowing isn't completed yet), create a playlist, add songs to it, view profile statistics, etc.
+Tunetracker allows users to sign up/ login to access core features of the application such as following/ unfollowing other users, create a playlist, add songs to it, view profile statistics, etc.
 
 ## Getting Started
 
@@ -27,11 +27,12 @@ Run Main.java File and follow instructions in terminal
 
 ## Help
 
-For help as to what commands are available simply enter 'help' in the terminal
+* For help as to what commands are available simply enter `help` in the terminal
 
-```
-help
-```
+
+* **It's recommended to use the dummy login! It's also suggested in the terminal when the program is ran, but the credentials are also below this text!**
+* dummy email: `dummy@gmail.com`
+* dummy password: `password`
 
 ## Authors
 
@@ -40,7 +41,7 @@ Thomas Garcia thomasakulla@gmail.com
 ## Version History
 
 * 1.0.0
-  *  Functionality added to: create a new user, view one's own profile , login, logout, make a playlist,
+  *  Functionality added to: create a new user, view one's own profile, view followers/ followees, login, logout, make a playlist,
   add a song to your playlist, view 5 random songs, follow a user, added 'help' command to
   offer help on current version of application, etc.
 
@@ -51,9 +52,8 @@ Thomas Garcia thomasakulla@gmail.com
 
 * ~~Add a playlist/ collection table where users can add their favorite songs to.~~
 * ~~Cover edge cases such as duplicate usernames~~, and make sure empty entries aren't valid for creating an account.
-* Finish unfollow method
 * Clean up code in Loader.java.
-* Add more documentation.
+* ~~Add more documentation.~~
 * Recommend songs.
 * Fully test out application to make sure edge cases are covered and no major bugs using JUnit.
 * Creating a frontend to connect to the backend using Javascript, and Javascript frameworks such as React or Vue and Bootstrap.

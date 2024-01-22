@@ -2,6 +2,11 @@ package backend.tunetracker.db.helpers;
 
 import java.util.List;
 
+/**
+ * Helper to print out playlist/ songs
+ *
+ * @author Thomas Garcia
+ * */
 public class PrintStatement {
     public static void printPlaylistHeaderFooter(List<String> playlistNames, String username) {
         username = (username != "") ? username : "Your ";
@@ -26,7 +31,6 @@ public class PrintStatement {
     }
 
     public static void printSongsFromPlaylist(String playlist, List<String> songs) {
-//        username = (username != "") ? username : "Your ";
         String header = "================" + playlist + " songs================";
 
         int lengthOfHeader = 0;

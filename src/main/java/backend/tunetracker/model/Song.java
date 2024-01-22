@@ -4,6 +4,8 @@ import java.sql.Date;
 
 /**
  * Class represents a simple song
+ *
+ * @author Thomas Garcia
  * */
 public class Song {
    private String songName;

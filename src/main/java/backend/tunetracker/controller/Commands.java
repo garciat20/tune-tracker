@@ -1,6 +1,5 @@
 package backend.tunetracker.controller;
 
-import backend.tunetracker.Main;
 import backend.tunetracker.db.entity.PlaylistSql;
 import backend.tunetracker.db.entity.SongSql;
 import backend.tunetracker.db.entity.UserSql;
@@ -10,10 +9,15 @@ import backend.tunetracker.model.User;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 import java.sql.Date;
+
+/**
+ * Class that takes in user input and issues commands accordingly
+ *
+ * @author Thomas Garcia
+ * */
 
 public class Commands {
     private final String YELLOW = "\u001B[33m";
@@ -23,7 +27,7 @@ public class Commands {
     private final Scanner scanner = new Scanner(System.in); // by default take in CLI commands
     private User loggedIn; // commands are only issued if logged in
 
-    // FOR HELP MESSAGE ADD: "VIEW PEOPLE FOLLOWING" AND "UNFOLLOW"
+
     private final String helpMessage = YELLOW+"""
             ================================================================================
             Commands: 
@@ -33,7 +37,9 @@ public class Commands {
             create_user: to create a new account to login and use application functionality
             view_profile: view information about a user 
             follow_user: follower another user
+            unfollow_user: unfollow another user
             view_followers: check out your followers
+            view_followees: check out who you're following
             create_playlist: create a playlist
             view_playlist: view your own playlist(s)
             view_songs: view some random songs
@@ -55,12 +61,16 @@ public class Commands {
         COMMAND_REFERENCE.put("view_playlist", 8);
         COMMAND_REFERENCE.put("add_song_to_playlist", 9);
         COMMAND_REFERENCE.put("view_songs", 10);
-//        COMMAND_REFERENCE.put("unfollow_user", 11);
+        COMMAND_REFERENCE.put("unfollow_user", 11);
         COMMAND_REFERENCE.put("view_followers", 12);
+        COMMAND_REFERENCE.put("view_followees", 13);
 
         this.loggedIn = null; // initialize commands in Main, so by default no one is logged in.
     }
 
+    /**
+     * Issues actions based on user input
+     * */
     public void parseInput(String input) throws SQLException {
         Integer commandNumber = COMMAND_REFERENCE.get(input);
         commandNumber = (commandNumber != null) ? commandNumber : 0; // checking if 0, if so no valid command
@@ -76,18 +86,25 @@ public class Commands {
             case 8 -> viewPlaylist();
             case 9 -> addSongToPlaylist();
             case 10 -> viewSongs();
-//            case 11 -> unfollowUser();
+            case 11 -> unfollowUser();
             case 12 -> viewFollowers();
+            case 13 -> viewFollowees();
             default -> System.out.println("Invalid command, enter 'help' for assistance");
         }
     }
 
+    /**
+     * Logs out a logged in user
+     * */
     public void logout(){
         checkIfLoggedIn();
         this.loggedIn = null;
         System.out.println("You have logged out. Enter 'help' for more commands");
     }
 
+    /**
+     * Non Logged in user can log out
+     * */
     public void createUser(){
         if (this.loggedIn != null) {
             System.out.println("You're already logged in! Enter 'logout' to create a new user!");
@@ -173,7 +190,7 @@ public class Commands {
     }
 
     public void viewFollowers(){
-        System.out.println("=============People you're following=============");
+        System.out.println("=============People following you=============");
         try {
             List<String> followers = UserSql.getFollowers(this.loggedIn.getUsername());
 
@@ -186,13 +203,20 @@ public class Commands {
         System.out.println("Enter 'help' for more commands!");
     }
 
+    public void viewFollowees(){
+        System.out.println("=============People you're following=============");
+        List<String> followees = UserSql.getFollowees(this.loggedIn.getUuid().toString());
+        for (int i =0; i < followees.size(); i++){
+            System.out.println(followees.get(i));
+        }
+        System.out.println("Enter 'help' for more commands!");
 
-    /**
-     * TODO: MAKE SURE IT WORKS AFTER YOU FINISH NEW METHOD IN USERSQL!!!!
-     * */
+    }
+
+
     public void unfollowUser(){
-        checkIfLoggedIn();
 
+        checkIfLoggedIn();
 
         System.out.print("Who do you wish to unfollow? ");
         String followee = this.scanner.nextLine().trim();
@@ -210,14 +234,8 @@ public class Commands {
     }
 
 
-    /**
-     * TODO: TEST IF WORKS!
-     * works
-     * */
     public void createPlaylist(){
         checkIfLoggedIn();
-        // SCANNER TAKE INPUT FOR NAME OF PLAYLIST
-        // CALL METHOD FROM USERSQL.JAVA
         if (this.loggedIn == null){
             System.out.println("You must be logged in");
             return;
@@ -230,10 +248,6 @@ public class Commands {
 
     }
 
-
-    /**
-     * TODO: TEST IF WORKS
-     */
     public void viewPlaylist(){
         checkIfLoggedIn();
         // show songs from playlist and name of playlist
@@ -275,24 +289,7 @@ public class Commands {
         }
 
     /**
-     * TODO: THE TWO METHODS BELOW ARE EASY TO DO
-     * */
-    public void renamePlaylist(){
-        // self-explanatory
-    }
-
-    public void deletePlaylist(){
-        // self-explanatory
-    }
-
-    public void viewSongsFromPlaylist(){
-        System.out.println("What songs ");
-    }
-
-    /**
-     * TODO: Create method to generate 5 random songs -- I THINK DONE
-     * TODO: Create method to get songId from the song
-     * TODO: CHECK IF WORKS, FINISH MOCK USER FOR LOADING PLAYLISTS WITH MUSIC
+     * Works I'm 99% sure
      * */
     public void addSongToPlaylist(){
         checkIfLoggedIn();
@@ -358,6 +355,16 @@ public class Commands {
         }
     }
 
+    /**
+     * TODO: THE TWO METHODS BELOW ARE EASY TO DO
+     * */
+    public void renamePlaylist(){
+        // self-explanatory
+    }
+
+    public void deletePlaylist(){
+        // self-explanatory
+    }
 
 //    public void getUsernames(){
 //        System.out.println("getting info");

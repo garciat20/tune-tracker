@@ -2,7 +2,6 @@ package backend.tunetracker.db.entity;
 
 import backend.tunetracker.Main;
 import backend.tunetracker.db.helpers.PrintStatement;
-import backend.tunetracker.model.Song;
 import backend.tunetracker.model.User;
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -14,6 +13,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+/**
+ * Class to interact with database concerning Users
+ *
+ * @author Thomas Garcia
+ * */
 
 public class UserSql {
     private static final String BLUE  = "\u001B[34m";
@@ -32,8 +37,10 @@ public class UserSql {
     private static final String EMAIL = "email";
     private static final String FOLLOWER_ID = "follower_id";
     private static final String FOLLOWEE_ID = "followee_id";
-    // INSERT INTO USERS(static final) VALUES ()
-    //
+
+    /**
+     * Insert a user into the database
+     * */
     public static void insertUser(User user, String password) throws SQLException{
         PreparedStatement ps = Main.sql.getCon().prepareStatement("INSERT INTO " +
                 USER_TABLE + "("+
@@ -55,7 +62,7 @@ public class UserSql {
     }
 
     /**
-     * TODO: Test if works
+     * Gets followers
      * */
     public static List<String> getFollowers(String username)throws SQLException{
         List<String> followers = new ArrayList<>();
@@ -69,7 +76,6 @@ public class UserSql {
         ResultSet rs = ps.executeQuery(); // results from sql table
 
 //        System.out.println("Followers of " + username + ": "); // traverse thru sql
-        // finish below
         while (rs.next()){
             String uuidColumn = rs.getString(FOLLOWER_ID);
             String follower = getUsername(uuidColumn);
@@ -79,6 +85,9 @@ public class UserSql {
 
     }
 
+    /**
+     * Views profile concerning followers, followees, and playlists
+     * */
     public static void viewProfile(String username) throws SQLException {
         System.out.println(BLUE + "Displaying " + username + "'s profile" + RESET);
         int followerCount = getFollowerCount(username);
@@ -123,6 +132,9 @@ public class UserSql {
         return null;
     }
 
+    /**
+     * Gets a user based on email/ password
+     * */
     public static User selectByEmailPassword(String email, String password){
         try {
             PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT * FROM " +
@@ -160,6 +172,9 @@ public class UserSql {
 
     }
 
+    /**
+     * Get every uuid from users table
+     * */
     public static List<UUID> getAllUuid() throws SQLException {
         PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT "+
                 USER_UUID + " FROM "+ USER_TABLE +";");
@@ -174,6 +189,9 @@ public class UserSql {
     }
 
 
+    /**
+     * follows person
+     * */
     public static void followPerson(UUID followerID, UUID followeeID){
         String followerStringId = followerID.toString();
         String followeeStringId = followeeID.toString();
@@ -193,6 +211,9 @@ public class UserSql {
         }
     }
 
+    /**
+     * Unfollows person
+     * */
     public static void unfollowPerson(UUID followerID, UUID followeeID){
         // make follower unfollow followee
         try {
@@ -208,12 +229,21 @@ public class UserSql {
     }
 
     /**
-     * TOOD: FINISH METHOD
+     * Gets list of people a user is following
      * */
-    public static List<String> getFollowees(){
+    public static List<String> getFollowees(String userUuid){
         List<String> followees = new ArrayList<>();
         try {
-            PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT ");
+            PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT " + USERNAME +
+                    " FROM " + USER_TABLE +
+                    " INNER JOIN "+ FOLLOWS_TABLE + " ON " + USER_TABLE +"." + USER_UUID + " =" + FOLLOWS_TABLE + "." + FOLLOWEE_ID +
+                    " WHERE " + FOLLOWER_ID + " =?");
+            ps.setString(1, userUuid);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                followees.add(rs.getString(USERNAME));
+            }
+
         } catch (SQLException e) {
             System.out.println("Error getting people someone follows");
         }
@@ -222,7 +252,7 @@ public class UserSql {
     }
 
     /**
-     * works
+     * Get numbers of followers
      * */
     public static int getFollowerCount(String username) throws SQLException {
         String uuid = getUUID(username);
@@ -241,9 +271,8 @@ public class UserSql {
 
 
     /**
-     * TODO: CHECK IF WORKS
+     * Get number of people following
      * */
-
     public static int getFolloweeCount(String username){
         int followeeCount = -1;
         try {

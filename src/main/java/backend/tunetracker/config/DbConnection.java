@@ -1,6 +1,12 @@
 package backend.tunetracker.config;
 import java.sql.*;
 
+/**
+ *  Class to establish a connection to the database
+ *
+ * @author Thomas Garcia
+ * */
+
 public class DbConnection {
     private static final String YELLOW = "\u001B[33m";
     private static final String RESET = "\u001B[0m";

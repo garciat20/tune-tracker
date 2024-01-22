@@ -1,5 +1,11 @@
 package backend.tunetracker.db.entity;
 
+/**
+ * Class to interact with database concerning Artists
+ *
+ * @author Thomas Garcia
+ * */
+
 public class ArtistSql {
     //table
     private static final String ARTIST_TABLE = "artist";

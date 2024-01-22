@@ -5,6 +5,8 @@ import java.util.UUID;
 
 /**
  * Class represents a User
+ *
+ * @author Thomas Garcia
  * */
 public class User {
     private final UUID uuid;

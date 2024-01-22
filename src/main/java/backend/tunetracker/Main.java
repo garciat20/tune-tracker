@@ -11,6 +11,8 @@ import java.sql.SQLException;
 
 /**
  * Main class to run program
+ *
+ * @author Thomas Garcia
  * */
 public class Main {
     private static final String YELLOW = "\u001B[33m";

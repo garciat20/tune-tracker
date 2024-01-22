@@ -4,6 +4,11 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * Helper that creates random dates from 1970 to 2023
+ *
+ * @author Thomas Garcia
+ * */
 public class DateGenerator {
     public static Date dateGenerator(){
         long minDay = LocalDate.of(1970, 1, 1).toEpochDay();
