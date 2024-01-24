@@ -1,6 +1,6 @@
 package backend.tunetracker;
 
-import backend.tunetracker.controller.Commands;
+import backend.tunetracker.db.controller.cli.Commands;
 import backend.tunetracker.config.DbConnection;
 import backend.tunetracker.seeddata.Loader;
 import com.opencsv.exceptions.CsvValidationException;

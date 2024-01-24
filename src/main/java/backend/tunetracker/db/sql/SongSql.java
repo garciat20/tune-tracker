@@ -1,8 +1,8 @@
-package backend.tunetracker.db.entity;
+package backend.tunetracker.db.sql;
 
 import backend.tunetracker.Main;
 import backend.tunetracker.db.helpers.PrintStatement;
-import backend.tunetracker.model.Song;
+import backend.tunetracker.db.model.Song;
 
 import java.sql.*;
 import java.util.LinkedList;

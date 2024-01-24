@@ -1,4 +1,4 @@
-package backend.tunetracker.model;
+package backend.tunetracker.db.model;
 
 import java.util.LinkedList;
 import java.util.List;

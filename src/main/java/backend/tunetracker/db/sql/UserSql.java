@@ -1,8 +1,8 @@
-package backend.tunetracker.db.entity;
+package backend.tunetracker.db.sql;
 
 import backend.tunetracker.Main;
 import backend.tunetracker.db.helpers.PrintStatement;
-import backend.tunetracker.model.User;
+import backend.tunetracker.db.model.User;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.sql.Date;
@@ -292,5 +292,34 @@ public class UserSql {
         return followeeCount;
     }
 
+    /**
+     * Get all users (most likely used just to put onto Spring Boot endpoint)
+     * */
+
+    public List<User> getUsers(){
+        List<User> users = new ArrayList<>();
+        try {
+            PreparedStatement ps = Main.sql.getCon().prepareStatement("SELECT * FROM " +
+                    USER_TABLE + ";");
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                String uuid = rs.getString(USER_UUID);
+                String username = rs.getString(USERNAME);
+                String password = rs.getString(PASSWORD);
+                String email = rs.getString(EMAIL);
+                String lastName = rs.getString(LAST_NAME);
+                String firstName =rs.getString(FIRST_NAME);
+                Date creationDate = rs.getDate(CREATION_DATE);
+                Date lastAccessDate = rs.getDate(LAST_ACCESS_DATE);
+
+                User user = new User(UUID.fromString(uuid),username,email,password,firstName,lastName,creationDate,lastAccessDate);
+                users.add(user);
+            }
+        }catch (SQLException e){
+            System.out.println("Error getting all users");
+        }
+        return users;
+    }
 
 }

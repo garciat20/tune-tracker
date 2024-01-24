@@ -1,24 +1,22 @@
 package backend.tunetracker.seeddata;
 
 import backend.tunetracker.Main;
-import backend.tunetracker.db.entity.PlaylistSql;
-import backend.tunetracker.db.entity.SongSql;
-import backend.tunetracker.db.entity.UserSql;
+import backend.tunetracker.db.sql.PlaylistSql;
+import backend.tunetracker.db.sql.SongSql;
+import backend.tunetracker.db.sql.UserSql;
 import backend.tunetracker.db.helpers.DateGenerator;
 import backend.tunetracker.db.helpers.EnglishOnly;
 import backend.tunetracker.db.helpers.MillisecondsConverter;
-import backend.tunetracker.model.Song;
-import backend.tunetracker.model.User;
+import backend.tunetracker.db.model.Song;
+import backend.tunetracker.db.model.User;
 import com.github.javafaker.Faker;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;

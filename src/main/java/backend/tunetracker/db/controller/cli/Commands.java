@@ -1,11 +1,11 @@
-package backend.tunetracker.controller;
+package backend.tunetracker.db.controller.cli;
 
-import backend.tunetracker.db.entity.PlaylistSql;
-import backend.tunetracker.db.entity.SongSql;
-import backend.tunetracker.db.entity.UserSql;
+import backend.tunetracker.db.sql.PlaylistSql;
+import backend.tunetracker.db.sql.SongSql;
+import backend.tunetracker.db.sql.UserSql;
 import backend.tunetracker.db.helpers.PrintStatement;
-import backend.tunetracker.model.Song;
-import backend.tunetracker.model.User;
+import backend.tunetracker.db.model.Song;
+import backend.tunetracker.db.model.User;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.sql.*;

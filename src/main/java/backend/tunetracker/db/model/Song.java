@@ -1,4 +1,4 @@
-package backend.tunetracker.model;
+package backend.tunetracker.db.model;
 
 import java.sql.Date;
 

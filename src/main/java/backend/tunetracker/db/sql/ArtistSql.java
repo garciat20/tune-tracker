@@ -1,4 +1,4 @@
-package backend.tunetracker.db.entity;
+package backend.tunetracker.db.sql;
 
 /**
  * Class to interact with database concerning Artists
