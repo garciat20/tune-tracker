@@ -42,8 +42,6 @@ public class SongSql {
     /**
      * Make method to view songs from song table
      * prompt if they'd like to search via filter but that's a FUTURE IMPLEMENTATION
-     * TODO: CHECK IF WORKS
-     * DOUBLE CHECK GENERAL ID
      * */
     public static void viewSongsFromPlaylist(int playlistId, String userUuid){
         try {
@@ -64,11 +62,7 @@ public class SongSql {
 
                 songNames.add(rs.getString(SONG_NAME));
             }
-            // FINISH WHERE CLAUSE`
-            /**
-             * TODO: CHECK IF PRINTING SONGS FROM PLAYLIST WORKS
-             * TODO: OKAY IT WORKS, ADD THAT YOU NEED TO ENTER HELP TO VIEW MORE COMMANDS AND  COLOR CODE IT MAYBE,  TESTED VIEW_PPLAYLIST, ADD MORE PRINT STATMENTS
-             * */
+
             PrintStatement.printSongsFromPlaylist(PlaylistSql.getPlaylistName(playlistId),songNames);
         } catch (SQLException e) {
             System.out.println("Error getting songs from a user's playlist");

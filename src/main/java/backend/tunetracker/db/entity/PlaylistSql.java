@@ -113,7 +113,7 @@ public class PlaylistSql {
     }
 
     /**
-     * TODO: CHECK IF WORKS
+     *
      * */
     public static String getPlaylistName(int playlistId){
         String playlistName = "";
