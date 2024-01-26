@@ -191,7 +191,7 @@ public class Loader {
         Faker faker = new Faker();
         LocalDate lD = LocalDate.now();
         Date creationDate = Date.valueOf(lD);
-        insertDummyUser();
+//        insertDummyUser();
 
 
         for (int i =0; i < 505; i++){
@@ -242,19 +242,25 @@ public class Loader {
 
     /**
      * Makes fake users have followers
+     * TODO: REMOVE THE FACT THAT DUMMY IS FOLLOWING ITSELF
      * */
     public static void loadFollowers() throws SQLException {
+
+
+        insertDummyUser();
         List<UUID> uuids = UserSql.getAllUuid();
         int counter = 0;
         String dummyUuid = UserSql.getUUID("dummy");
         while (counter < uuids.size()-1){
-
+            if (uuids.get(counter) == UUID.fromString(dummyUuid)){
+                continue;
+            }
             UUID uuid1 = uuids.get(counter);// get the first user
             counter ++;
             UUID uuid2 = uuids.get(counter); // get the second user
             UserSql.followPerson(uuid1,uuid2);
-            UserSql.followPerson(uuid2, uuid1); // isue maybe
-//            UserSql.followPerson(UUID.fromString(dummyUuid), uuid1); // dummy following
+//            UserSql.followPerson(uuid2, uuid1); // isue maybe
+            UserSql.followPerson(UUID.fromString(dummyUuid), uuid1); // dummy following
             UserSql.followPerson(uuid2, UUID.fromString(dummyUuid)); // dummy followers
             counter ++;
         }
