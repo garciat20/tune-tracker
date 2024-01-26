@@ -97,7 +97,10 @@ public class Commands {
      * Logs out a logged in user
      * */
     public void logout(){
-        checkIfLoggedIn();
+        if (this.loggedIn == null){
+            System.out.println("You must be logged in");
+            return;
+        }
         this.loggedIn = null;
         System.out.println("You have logged out. Enter 'help' for more commands");
     }
@@ -161,7 +164,10 @@ public class Commands {
      * TODO: FINISH VIEWPROFILE
      * */
     public void viewProfile() throws SQLException {
-        checkIfLoggedIn();
+        if (this.loggedIn == null){
+            System.out.println("You must be logged in");
+            return;
+        }
         System.out.print("Enter the username of who you want to search: ");
         String username = this.scanner.nextLine().trim();
 
@@ -175,7 +181,10 @@ public class Commands {
      * With ID's use UserSQL class to enable the action
      * */
     public void followUser(){
-        checkIfLoggedIn();
+        if (this.loggedIn == null){
+            System.out.println("You must be logged in");
+            return;
+        }
         System.out.print("Enter username you wish to follow: ");
         String username = this.scanner.nextLine().trim();
         try {
@@ -190,6 +199,10 @@ public class Commands {
     }
 
     public void viewFollowers(){
+        if (this.loggedIn == null){
+            System.out.println("You must be logged in");
+            return;
+        }
         System.out.println("=============People following you=============");
         try {
             List<String> followers = UserSql.getFollowers(this.loggedIn.getUsername());
@@ -204,6 +217,10 @@ public class Commands {
     }
 
     public void viewFollowees(){
+        if (this.loggedIn == null){
+            System.out.println("You must be logged in");
+            return;
+        }
         System.out.println("=============People you're following=============");
         List<String> followees = UserSql.getFollowees(this.loggedIn.getUuid().toString());
         for (int i =0; i < followees.size(); i++){
@@ -216,7 +233,10 @@ public class Commands {
 
     public void unfollowUser(){
 
-        checkIfLoggedIn();
+        if (this.loggedIn == null){
+            System.out.println("You must be logged in");
+            return;
+        }
 
         System.out.print("Who do you wish to unfollow? ");
         String followee = this.scanner.nextLine().trim();
@@ -235,7 +255,6 @@ public class Commands {
 
 
     public void createPlaylist(){
-        checkIfLoggedIn();
         if (this.loggedIn == null){
             System.out.println("You must be logged in");
             return;
@@ -249,7 +268,10 @@ public class Commands {
     }
 
     public void viewPlaylist(){
-        checkIfLoggedIn();
+        if (this.loggedIn == null){
+            System.out.println("You must be logged in");
+            return;
+        }
         // show songs from playlist and name of playlist
 
         System.out.println(RED+"CAN ONLY VIEW YOUR OWN PLAYLIST AT THE MOMENT"+ RESET);
@@ -292,7 +314,10 @@ public class Commands {
      * Works I'm 99% sure
      * */
     public void addSongToPlaylist(){
-        checkIfLoggedIn();
+        if (this.loggedIn == null){
+            System.out.println("You must be logged in");
+            return;
+        }
         /**
          * make sure you preloaded data for a user to have a fake playlist
          * */
@@ -348,12 +373,6 @@ public class Commands {
         System.out.println("Enter 'help' for more commands!");
     }
 
-    public void checkIfLoggedIn(){
-        if (this.loggedIn == null){
-            System.out.println("You must be logged in");
-            return;
-        }
-    }
 
     /**
      * TODO: THE TWO METHODS BELOW ARE EASY TO DO

@@ -241,27 +241,33 @@ public class Loader {
     }
 
     /**
-     * Makes fake users have followers
-     * TODO: REMOVE THE FACT THAT DUMMY IS FOLLOWING ITSELF
+     * Makes  dummy have followers/ follow others
      * */
     public static void loadFollowers() throws SQLException {
-
-
         insertDummyUser();
         List<UUID> uuids = UserSql.getAllUuid();
         int counter = 0;
         String dummyUuid = UserSql.getUUID("dummy");
         while (counter < uuids.size()-1){
-            if (uuids.get(counter) == UUID.fromString(dummyUuid)){
-                continue;
-            }
-            UUID uuid1 = uuids.get(counter);// get the first user
+            UUID uuid1 = uuids.get(counter);
             counter ++;
-            UUID uuid2 = uuids.get(counter); // get the second user
-            UserSql.followPerson(uuid1,uuid2);
-//            UserSql.followPerson(uuid2, uuid1); // isue maybe
-            UserSql.followPerson(UUID.fromString(dummyUuid), uuid1); // dummy following
-            UserSql.followPerson(uuid2, UUID.fromString(dummyUuid)); // dummy followers
+
+            UUID uuid2 = uuids.get(counter);
+
+            if (!(uuid1.toString().equals(dummyUuid))) {
+                UserSql.followPerson(uuid1, UUID.fromString(dummyUuid)); //someone follows dummy
+                UserSql.followPerson(UUID.fromString(dummyUuid),uuid1); //dummy follows someone
+            }
+            if (!(uuid2.toString().equals(dummyUuid))) {
+                UserSql.followPerson(uuid2, UUID.fromString(dummyUuid)); //someone follows dummy
+                UserSql.followPerson(UUID.fromString(dummyUuid),uuid2);// dummy follows someone
+            }
+
+            // anyone who isn't a dummy will be following someone and followed by that same person!
+            if (!(uuid2.toString().equals(dummyUuid)) && !(uuid1.toString().equals(dummyUuid))) {
+                UserSql.followPerson(uuid1,uuid2);
+                UserSql.followPerson(uuid2,uuid1);
+            }
             counter ++;
         }
 
