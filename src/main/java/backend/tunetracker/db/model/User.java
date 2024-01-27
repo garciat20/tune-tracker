@@ -3,7 +3,6 @@ package backend.tunetracker.db.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.Transient;
 
 import java.sql.Date;
 import java.util.UUID;

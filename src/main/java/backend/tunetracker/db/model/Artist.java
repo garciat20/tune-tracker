@@ -1,7 +1,7 @@
 package backend.tunetracker.db.model;
 
 import java.util.LinkedList;
-import java.util.List;
+
 
 /**
  * Class that represents a simple Artist
@@ -9,7 +9,7 @@ import java.util.List;
  * @author Thomas Garcia
  * */
 public class Artist {
-    private LinkedList<String> songs = new LinkedList();
+    private LinkedList<String> songs = new LinkedList<>();
     private String artist;
     private int id;
     public Artist(int id, String artist){

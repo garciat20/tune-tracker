@@ -2,6 +2,7 @@ package backend.tunetracker.db.sql;
 
 /**
  * Class to interact with database concerning Artists
+ * TODO: MAYBE ADD MORE FUNCTIONALITY
  *
  * @author Thomas Garcia
  * */

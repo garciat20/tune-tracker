@@ -22,9 +22,7 @@ public class SongSql {
     private static final String ARTISTS_TABLE = "artist";
     private static final String ARTIST_SONGS_TABLE = "artist_songs";
     // columns
-    /**
-     * TODO: FINISH COLUMN FINAL VARIABLES
-     * */
+    
     private static final String PLAYLIST_USER_ID = "user_id";
     private static final String GENERAL_ID = "id";
     private static final String SONG_IN_PLAYLIST_TABLE_SONG_ID = "song_id";

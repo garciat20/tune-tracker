@@ -16,7 +16,7 @@ import java.util.List;
  * @author Thomas Garcia
  * */
 @RestController
-@RequestMapping("/songs")
+@RequestMapping("/api/songs")
 public class SongController {
     @Autowired
     private SongServiceImpl songService;
