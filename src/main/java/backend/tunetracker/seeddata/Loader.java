@@ -191,8 +191,6 @@ public class Loader {
         Faker faker = new Faker();
         LocalDate lD = LocalDate.now();
         Date creationDate = Date.valueOf(lD);
-//        insertDummyUser();
-
 
         for (int i =0; i < 505; i++){
             String firstName = faker.name().firstName();
@@ -241,7 +239,7 @@ public class Loader {
     }
 
     /**
-     * Makes  dummy have followers/ follow others
+     * Makes dummy have followers/ follow others | and anyone else have a follower/ follow someone
      * */
     public static void loadFollowers() throws SQLException {
         insertDummyUser();

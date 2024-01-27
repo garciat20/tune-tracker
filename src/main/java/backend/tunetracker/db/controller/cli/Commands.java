@@ -106,7 +106,7 @@ public class Commands {
     }
 
     /**
-     * Non Logged in user can log out
+     * Logged in user can create an account
      * */
     public void createUser(){
         if (this.loggedIn != null) {
@@ -168,7 +168,7 @@ public class Commands {
             System.out.println("You must be logged in");
             return;
         }
-        System.out.print("Enter the username of who you want to search: ");
+        System.out.print("Enter the username of who you want to search (hint: view 'dummy'): ");
         String username = this.scanner.nextLine().trim();
 
         UserSql.viewProfile(username);
@@ -283,12 +283,9 @@ public class Commands {
         if (playlistNames.size() == 0){
             return;
         }
-//        List<String> playlistNames = PlaylistSql.getPlaylistNames(this.loggedIn.getUuid().toString());
-//        for (int i = 0; i < playlistNames.size(); i ++){
-//            System.out.println(playlistNames.get(i));
-//        }
+
         System.out.println("Would you like to see the songs from your playlist? (Enter " +
-                "'y' or 'n'");
+                "'y' or 'n')");
         String answer = this.scanner.nextLine().trim();
 
         if (!(answer.matches("y"))){
@@ -298,11 +295,6 @@ public class Commands {
         System.out.print("Enter the playlist name you wish to view: ");
         // print out playlist(s) for a user based on user UUID
         String playlistName = this.scanner.nextLine().trim();
-
-//        System.out.println("Do you wish to view your playlist? Enter 'yes' or 'no'");
-//        String yesOrNo = this.scanner.nextLine().trim();
-//        if (yesOrNo.matches("yes")){
-            // below prints out the output
 
         // BELOW ONLY PRINTS OUT PLAYLIST SONGS FOR LOGGED IN USER
         int playlistId = PlaylistSql.getPlaylistId(playlistName,this.loggedIn.getUuid().toString());
@@ -327,11 +319,6 @@ public class Commands {
             System.out.println("No playlists were found, create one (create_playlist)! Enter 'help' for more commands");
             return;
         }
-//        System.out.println("Which playlist would you like to add a song to? (your playlists are below): ");
-
-        //method: generate a user's playlist, and get playlistId from playlist name
-
-//        playlistNames.forEach(System.out::println);
 
         PrintStatement.printPlaylistHeaderFooter(playlistNames, loggedIn.getUsername());
 
@@ -340,10 +327,6 @@ public class Commands {
         int playlistId = PlaylistSql.getPlaylistId(playlistName, this.loggedIn.getUuid().toString());
 
         System.out.println("What song would you like to add to your playlist? (5 random songs are below)");
-
-        // method: generate 5 random songs
-//        List<Song> = new LinkedList<>();
-        // check how to create list and which one is perfereable based on performance
 
         List<Song> songs = SongSql.randomSongGenerator();
         for (int i = 0; i < songs.size(); i++){

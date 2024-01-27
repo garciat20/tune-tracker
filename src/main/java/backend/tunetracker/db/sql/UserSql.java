@@ -89,13 +89,17 @@ public class UserSql {
      * Views profile concerning followers, followees, and playlists
      * */
     public static void viewProfile(String username) throws SQLException {
+        String userUuid = UserSql.getUUID(username);
+        if(userUuid == null){
+            System.out.println(username + " doesn't exist :(");
+            return;
+        }
         System.out.println(BLUE + "Displaying " + username + "'s profile" + RESET);
         int followerCount = getFollowerCount(username);
         int followeeCount = getFolloweeCount(username);
         System.out.println("Number of followers: " + String.valueOf(followerCount));
         System.out.println("Number of people "+ username+ " is following: " + String.valueOf(followeeCount));
 
-        String userUuid = UserSql.getUUID(username);
         List<String> playlistNames = PlaylistSql.getPlaylistNames(userUuid);
 
 //        System.out.println(username + " playlist's are:" );
