@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * Class represents a way to access the business logic (Service layer)/ exposing functionality
+ * for Songs
+ * @author Thomas Garcia
+ * */
 @RestController
 @RequestMapping("/songs")
 public class SongController {

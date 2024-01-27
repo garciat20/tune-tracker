@@ -1,7 +1,9 @@
 package backend.tunetracker.db.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
 
 import java.sql.Date;
 import java.util.UUID;
@@ -17,9 +19,13 @@ public class User {
     private UUID uuid;
     private String username;
     private String email;
+    @Column(name = "first_name")
     private String firstName;
+    @Column(name = "last_name")
     private String lastName;
+    @Column(name = "creation_date")
     private Date creationDate;
+    @Column(name = "last_access_date")
     private Date lastAccessDate;
     private String password;
 
