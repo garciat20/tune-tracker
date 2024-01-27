@@ -21,7 +21,7 @@ import java.util.List;
  * @author Thomas Garcia
  * */
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/springusers")
 public class UserController {
     @Autowired
     private UserServiceImpl userService; //also try just with the service

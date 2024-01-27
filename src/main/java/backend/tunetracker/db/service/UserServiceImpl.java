@@ -7,6 +7,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Class implemented UserService interface to unique provide business logic
+ * for Users
+ *
+ * @author Thomas Garcia
+ * */
 @Service
 public class UserServiceImpl implements UserService{
     @Autowired
