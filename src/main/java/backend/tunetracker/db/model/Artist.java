@@ -40,9 +40,9 @@ public class Artist {
         this.songs = new LinkedList<>();
     }
 
-    // public int getId() { maybe add back the field for id? its auto generated
-    //     return id;
-    // }
+    public Long getId() {
+        return id;
+    }
 
     public List<String> getSongs() { 
         return songs;

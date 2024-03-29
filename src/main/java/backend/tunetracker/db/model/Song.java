@@ -52,9 +52,9 @@ public class Song {
         return releaseYear;
     }
 
-    // public Long getId() {
-    //     return id;
-    // }
+    public Long getId() {
+        return id;
+    }
 
     public Time getDuration() {
         return duration;

@@ -33,7 +33,18 @@ public class ArtistSongs {
     // @JoinColumn(name = "song_id", referencedColumnName = "id")
     // private Song song;
   
+    @Column(name = "artist_id")
+    private int artist_id;
+
+    @Column(name = "song_id")
+    private int song_id;
+
     public ArtistSongs(){}
     
-
+    public int getArtist_id() {
+        return artist_id;
+    }
+    public int getSong_id() {
+        return song_id;
+    }
 }
