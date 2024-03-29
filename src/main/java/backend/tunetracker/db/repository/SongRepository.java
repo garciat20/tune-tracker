@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
  *
  * @author Thomas Garcia
  * */
-@Repository
-public interface SongRepository extends JpaRepository<Song, Long> {
+@Repository // Indicates that this class is a repository class, meaning it's used to store and retrieve data. -used for database operations.
+public interface SongRepository extends JpaRepository<Song, Long> { // JpaRepository is an interface that provides methods for performing CRUD operations on a specific entity. It's a generic interface, where T is the type of the entity to be managed and ID is the type of the entity's identifier. 
 }

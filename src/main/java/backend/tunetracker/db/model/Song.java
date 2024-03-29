@@ -6,6 +6,8 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 /**
  * Class represents a simple song
@@ -20,10 +22,15 @@ public class Song {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Transient
+    @JsonIgnore
+    private List<Artist> artist;
+    
     @Column(name = "song_name")
     private String songName;
-    @Transient // doesnt show up
-    private List<Artist> artist;
+    // @Transient // this annotation tells the JPA to ignore this field when creating the table (doesn't even exist in this table)
+    // @JsonIgnore // this annotation tells the Jackson library to ignore this field when serializing the object to JSON
+    // private List<Artist> artist;
     @Column(name = "release_year")
     private Date releaseYear;
     @Column(name = "duration")
@@ -45,9 +52,9 @@ public class Song {
         return releaseYear;
     }
 
-    public Long getId() {
-        return id;
-    }
+    // public Long getId() {
+    //     return id;
+    // }
 
     public Time getDuration() {
         return duration;
@@ -57,7 +64,6 @@ public class Song {
         return songName;
     }
 
-    @Transient
     public List<Artist> getArtist() {
         return artist;
     }

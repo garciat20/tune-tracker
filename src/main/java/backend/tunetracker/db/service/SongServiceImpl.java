@@ -13,11 +13,14 @@ import java.util.List;
  *
  * @author Thomas Garcia
  * */
-@Service
+@Service // Indicates that this class is a service class, meaning it contains business logic.
 public class SongServiceImpl implements SongService{
-    @Autowired
     private SongRepository songRepository;
-
+    
+    @Autowired // This annotation is used to let Spring know that it should inject an instance of SongRepository into this class.
+    public SongServiceImpl(SongRepository songRepository){
+        this.songRepository = songRepository; 
+    }
 
     @Override
     public List<Song> fetchAllSongs() {

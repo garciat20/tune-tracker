@@ -3,6 +3,7 @@ package backend.tunetracker.db.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import java.sql.Date;
 import java.util.UUID;
@@ -13,14 +14,15 @@ import java.util.UUID;
  * @author Thomas Garcia
  * */
 @Entity
+@Table(name = "user")
 public class User {
     @Id
     private UUID uuid;
     private String username;
     private String email;
-    @Column(name = "first_name")
+    @Column(name = "first_name") 
     private String firstName;
-    @Column(name = "last_name")
+    @Column(name = "last_name") 
     private String lastName;
     @Column(name = "creation_date")
     private Date creationDate;
