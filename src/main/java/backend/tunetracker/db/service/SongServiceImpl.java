@@ -8,8 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Class implemented SongService interface to unique provide business logic
- * for Songs
+ * Class implemented SongService interface to unique provide business logic for Songs
  *
  * @author Thomas Garcia
  * */

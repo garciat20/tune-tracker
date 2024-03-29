@@ -14,11 +14,11 @@ import backend.tunetracker.db.repository.ArtistSongsRepository;
  */
 
 @Service // Indicates that this class is a service class, meaning it contains business logic.
-public class ArtistSongsServiceImpl implements ArtistSongsService{
+public class ArtistSongsImpl implements ArtistSongsService{
     private ArtistSongsRepository artistSongsRepository;
 
     @Autowired // This annotation is used to let Spring know that it should inject an instance of ArtistSongsRepository into this class.
-    public ArtistSongsServiceImpl(ArtistSongsRepository artistSongsRepository){
+    public ArtistSongsImpl(ArtistSongsRepository artistSongsRepository){
         this.artistSongsRepository = artistSongsRepository;
     }
 

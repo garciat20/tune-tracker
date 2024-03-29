@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import backend.tunetracker.db.model.ArtistSongs;
-import backend.tunetracker.db.service.ArtistSongsServiceImpl;
+import backend.tunetracker.db.service.ArtistSongsImpl;
 
 /*
  * Class represents a way to access the business logic (Service layer)/ exposing functionality
@@ -17,10 +17,10 @@ import backend.tunetracker.db.service.ArtistSongsServiceImpl;
 @RestController
 @RequestMapping("/api/artist-songs")
 public class ArtistSongsController {
-    private ArtistSongsServiceImpl artistSongsImpl;
+    private ArtistSongsImpl artistSongsImpl;
 
     @Autowired // ArtistSongsImpl is a bean (?) that implements some interface or provides functionality related to ArtistSongs via autowired annotation, Spring will automatically instantiate an instance of ArtistSongsImpl and inject it into the class where @Autowired is used.
-    public ArtistSongsController(ArtistSongsServiceImpl artistSongsImpl){
+    public ArtistSongsController(ArtistSongsImpl artistSongsImpl){
         this.artistSongsImpl = artistSongsImpl;
     }
 

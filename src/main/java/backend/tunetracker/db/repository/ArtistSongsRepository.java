@@ -11,6 +11,6 @@ import backend.tunetracker.db.model.ArtistSongs;
  * @Author Thomas Garcia
  */
 @Repository
-public interface ArtistSongsRepository extends JpaRepository<ArtistSongs, Long>{
+public interface ArtistSongsRepository extends JpaRepository<ArtistSongs, Long>{ // JpaRepository is an interface that provides methods for performing CRUD operations on a specific entity. It's a generic interface, where T is the type of the entity to be managed and ID is the type of the entity's identifier.
     
 }

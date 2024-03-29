@@ -1,21 +1,15 @@
 package backend.tunetracker.db.model;
 
-import java.util.List;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 /**
- * TODO: Emulate Artist_Song table
- *TODO: STUCK ON NOT GETTING EMPTY QUERIES RAHHH
+ *  Emulate Artist_Song table
+ *
  * @author Thomas Garcia
  * */
 @Entity

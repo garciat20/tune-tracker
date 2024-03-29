@@ -35,6 +35,8 @@ public class Artist {
     @JsonIgnore
     private List<String> songs;
 
+    public Artist(){} // default constructor for Spring boot, it needs this to create an instance of the class via reflection. A default constructor allows Spring to create a new instance of your bean without needing any arguments. Spring Boot heavily relies on dependency injection, where beans are injected with their dependencies through constructors or setter methods.
+
     public Artist(String artist){
         this.artist = artist;
         this.songs = new LinkedList<>();
@@ -44,6 +46,8 @@ public class Artist {
         return id;
     }
 
+    // @Transient
+    // @JsonIgnore
     public List<String> getSongs() { 
         return songs;
     }
@@ -52,6 +56,8 @@ public class Artist {
         return artist;
     }
 
+    // @Transient
+    // @JsonIgnore
     public void addSong(String song) {
         this.songs.add(song);
     }
