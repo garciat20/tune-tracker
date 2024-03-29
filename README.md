@@ -26,7 +26,7 @@ Tunetracker allows users to sign up/ login to access core features of the applic
 * DataGrip: Click on the DataSources category, then enter all the necessary information such as port number (**3306**), **root** as the username/ password, and creating a database called **tunetracker**.
 
 ### Executing program
-* Once you start up the Mysql Server and have everything configured, you can access the terminal side of this project
+* Once you start up the Mysql Server and have everything configured, you can access the terminal side of this project<br>
 ``Run Main.java File and follow instructions in terminal``
 
 * STILL WORKING ON FRONTEND PART 
