@@ -12,6 +12,7 @@ import backend.tunetracker.db.service.ArtistSongsImpl;
 
 /*
  * Class represents a way to access the business logic (Service layer)/ exposing functionality
+ * TODO: Somehow get the actual playlist name, and the artist name
  */
 
 @RestController

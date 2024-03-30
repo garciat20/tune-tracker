@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 import backend.tunetracker.db.model.Follows;
 import backend.tunetracker.db.service.FollowsServiceImpl;
 
+/*
+ * This class is used to handle HTTP requests for the Follows table in the database.
+ * TODO: Somehow get a user's followers and following in the request via joins (maybe call my vanilla SQL query in the service layer?) 
+ */
+
 @RestController // This annotation is used to create RESTful web services using Spring MVC. It's a specialization of @Component, which means it's a Spring-managed bean.
 @RequestMapping("/api/follows") // This annotation is used to map web requests onto specific handler classes and/or handler methods.
 public class FollowsController {

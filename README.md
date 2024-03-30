@@ -55,11 +55,9 @@ Thomas Garcia tmg2102@rit.edu or tmg2102dev@gmail.com
     * Able to connect to database, no functionality yet besides connecting to database. No JUnit testing yet.
  
 ## Future/ Goals
-
+* Make the API endpoints have more defined information
 * ~~Add a playlist/ collection table where users can add their favorite songs to.~~
 * ~~Cover edge cases such as duplicate usernames~~, and make sure empty entries aren't valid for creating an account.
-* Clean up code in Loader.java.
 * ~~Add more documentation.~~
-* Recommend songs.
 * Fully test out application to make sure edge cases are covered and no major bugs using JUnit.
 * Creating a frontend to connect to the backend using Javascript, and Javascript frameworks such as React or Vue and Bootstrap.

@@ -10,6 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 import backend.tunetracker.db.model.SongsInPlaylist;
 import backend.tunetracker.db.service.SongsInPlaylistServiceImpl;
 
+/*
+ * This class is used to handle HTTP requests for the SongsInPlaylist table in the database.
+ * TODO: Somehow get the actual playlist name, and the song name
+ 
+ */
+
 @RestController
 @RequestMapping("/api/songs-in-playlist")
 public class SongsInPlaylistController {
