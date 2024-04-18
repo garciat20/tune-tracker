@@ -3,8 +3,9 @@ import { Container, Navbar, NavDropdown } from 'react-bootstrap';
 import './NavigationBar.css';
 
 export default function NavigationBar() {
+
     return (
-        <Navbar bg="dark" variant="dark">
+        <Navbar bg="dark" variant="dark" >
             <Container fluid> 
                 <Navbar.Brand href="#home" id="brand"> 
                     <div className="p-2">TuneTracker</div>
@@ -15,7 +16,6 @@ export default function NavigationBar() {
                     <NavDropdown.Item id="d-item" href="#placeholder">Placeholder2</NavDropdown.Item>
                     </NavDropdown>
                 </div>
-
             </Container>
         </Navbar>
     );
