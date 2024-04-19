@@ -4,8 +4,12 @@
 #brand{
     font-style: italic;
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-decoration: none;
+    color: white;
 }
+
 
 #d-item{
     color: #F8B6C1;
 }
+

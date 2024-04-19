@@ -1,14 +1,11 @@
 import React from 'react';
 import { Button, Col, Container, Form, Row, Card} from 'react-bootstrap'
 
-
 export default function LandingPage() {
-
-    return (
- 
-        <Container fluid style={{ height: '100vh' }} className='d-flex align-items-center'>
-            <Row >
-                <Col className="d-flex justify-content-center" >
+    return ( 
+        <Container className='d-flex align-items-center'>
+            <Row style={{padding: "2rem"}}>
+                <Col >
                     <Form>
                         <Form.Group className='mb-2'>
                             <Form.Label>Email Address</Form.Label>
@@ -18,12 +15,14 @@ export default function LandingPage() {
                             <Form.Label>Password</Form.Label>
                             <Form.Control type="password" placeholder="Password" />
                         </Form.Group>
-                        <Button variant="primary" type="submit" className="me-5">
-                            Login
-                        </Button>
-                        <Button variant="primary" type="submit">
-                            Signup
-                        </Button>
+                        <div className='d-flex justify-content-between'> 
+                            <Button variant="primary" type="submit">
+                                Signup
+                            </Button>
+                            <Button variant="primary" type="submit">
+                                Login
+                            </Button>
+                        </div>
                     </Form>
                 </Col>
                 <Col className="d-flex justify-content-center">
@@ -64,3 +63,4 @@ export default function LandingPage() {
 
 //3) The <Figure.Image> component has the mx-auto and d-block classes, which are Bootstrap utility classes for centering the image horizontally within the figure. mx-auto sets the left and right margins to auto, and d-block makes the image a block-level element.
 
+//   <div className='d-flex justify-content-between'>  -- using utlilies

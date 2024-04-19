@@ -5,7 +5,7 @@ import { Navbar } from "react-bootstrap";
 export default function MyFooter(){
     return (
 
-            <Navbar bg="dark" variant="dark" className="justify-content-center">
+            <Navbar fixed="bottom" bg="dark" variant="dark" className="justify-content-center">
                 <Navbar.Text className="footer-text">
                     &copy; {new Date().getFullYear()} TuneTracker | Thomas Garcia | <a id ="link" href="mailto:tmg2102@rit.edu">tmg2102@rit.edu</a>
                 </Navbar.Text>

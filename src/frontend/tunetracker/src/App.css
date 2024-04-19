@@ -1,6 +1,15 @@
  #root {
   background-color: #b298e5;
  }
+
+ .App{
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+}
+ .App > *{
+  flex: 1;
+ }
 /* 
 .App-logo {
   height: 40vmin;

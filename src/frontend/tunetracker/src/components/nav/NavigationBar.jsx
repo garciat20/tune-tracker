@@ -2,22 +2,25 @@ import React from 'react';
 import { Container, Navbar, NavDropdown } from 'react-bootstrap';
 import './NavigationBar.css';
 
-export default function NavigationBar() {
 
-    return (
-        <Navbar bg="dark" variant="dark" >
+export default function NavigationBar() {
+//        <Navbar.Brand href="#home" id="brand"> 
+//<div className="p-2">TuneTracker</div>
+    return (    
+        <Navbar fixed="top" bg="dark" variant="dark" >
             <Container fluid> 
-                <Navbar.Brand href="#home" id="brand"> 
+                <Navbar.Brand href="/" id="brand"> 
                     <div className="p-2">TuneTracker</div>
                 </Navbar.Brand>
                 <div className="color-drop">
                     <NavDropdown title="Menu" menuVariant="dark" align="end">
-                    <NavDropdown.Item id="d-item" href="#placeholder">Placeholder1</NavDropdown.Item>
-                    <NavDropdown.Item id="d-item" href="#placeholder">Placeholder2</NavDropdown.Item>
+                    <NavDropdown.Item id="d-item" href="/about-me">About Me</NavDropdown.Item>
+                    <NavDropdown.Item id="d-item" href="/">Placeholder2</NavDropdown.Item>
                     </NavDropdown>
                 </div>
             </Container>
         </Navbar>
+
     );
 }
 // https://getbootstrap.com/docs/5.3/utilities/flex/ --> pushign items to the right/left 
